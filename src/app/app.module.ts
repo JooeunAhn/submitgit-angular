@@ -16,6 +16,8 @@ import { AppState, InternalStateType } from './app.service';
 import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
+import {AuthService} from "./shared/services/auth.service";
+import {AppConfig} from "./app.config";
 
 
 // Application wide providers
@@ -28,6 +30,10 @@ export type StoreType = {
   state: InternalStateType,
   restoreInputValues: () => void,
   disposeOldHosts: () => void
+};
+
+export const APPCONFIG:AppConfig = {
+  BASE_URL: 'http://127.0.0.1:8000/'
 };
 
 /**
@@ -50,12 +56,12 @@ export type StoreType = {
     routing
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    AuthService,
+    {provide:'APP_CONFIG', useValue:APPCONFIG}
   ]
 })
 
 export class AppModule {
-
-  constructor(public appState: AppState) {
-  }
+  constructor(public appState: AppState) {}
 }
