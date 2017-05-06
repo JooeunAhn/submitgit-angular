@@ -2,6 +2,7 @@ import {Injectable, Inject} from '@angular/core';
 import {Http, Response, Headers} from "@angular/http";
 import {Observable} from "rxjs";
 import {AppConfig} from "../../app.config";
+import {Router} from "@angular/router";
 
 interface auth{
   username: string,
@@ -18,7 +19,7 @@ interface authSignUp{
 @Injectable()
 export class AuthService {
 
-  constructor(@Inject ('APP_CONFIG') private config: AppConfig, private http: Http) { }
+  constructor(@Inject ('APP_CONFIG') private config: AppConfig, private http: Http, private router: Router) { }
 
   signup(formData: authSignUp): Observable<Response>{
     return this.http.post(
@@ -33,6 +34,11 @@ export class AuthService {
       `${this.config.BASE_URL}api/v1/rest-auth/login/`,
       JSON.stringify(formData),
       {headers: new Headers({'Content-Type': "application/json"})})
+  }
+
+  logout(): void{
+    localStorage.removeItem('auth_token');
+    this.router.navigate(['/login']);
   }
 
 }

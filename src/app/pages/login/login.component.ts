@@ -34,6 +34,7 @@ export class Login {
         (data) => {
           if(data.status == 200){
             //TODO COOKIE 기반 토큰어스
+            localStorage.setItem('auth_token', data.json()['key']);
             this.router.navigate(['pages']);
           }
         },

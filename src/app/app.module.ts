@@ -18,6 +18,7 @@ import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
 import {AuthService} from "./shared/services/auth.service";
 import {AppConfig} from "./app.config";
+import {AuthGuard} from "./shared/services/auth.guard";
 
 
 // Application wide providers
@@ -58,6 +59,7 @@ export const APPCONFIG:AppConfig = {
   providers: [ // expose our Services and Providers into Angular's dependency injection
     APP_PROVIDERS,
     AuthService,
+    AuthGuard,
     {provide:'APP_CONFIG', useValue:APPCONFIG}
   ]
 })
