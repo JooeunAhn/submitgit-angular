@@ -20,6 +20,7 @@ export class ProfileGuard implements CanActivate {
       let data = res.json();
       if(Object.keys(data).length == 0){
         this.router.navigate(['/profile', 'add']);
+        return false;
       }
       return true;
     })
