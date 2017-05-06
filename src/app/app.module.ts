@@ -19,6 +19,7 @@ import { PagesModule } from './pages/pages.module';
 import {AuthService} from "./shared/services/auth.service";
 import {AppConfig} from "./app.config";
 import {AuthGuard} from "./shared/services/auth.guard";
+import {ProfileGuard} from "./shared/services/profile.guard";
 
 
 // Application wide providers
@@ -60,6 +61,7 @@ export const APPCONFIG:AppConfig = {
     APP_PROVIDERS,
     AuthService,
     AuthGuard,
+    ProfileGuard,
     {provide:'APP_CONFIG', useValue:APPCONFIG}
   ]
 })
