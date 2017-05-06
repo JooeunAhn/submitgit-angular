@@ -25,7 +25,14 @@ export class AuthService {
       `${this.config.BASE_URL}api/v1/rest-auth/registration/`,
       JSON.stringify(formData),
       {headers: new Headers({'Content-Type': "application/json"})}
-    ).map(data => data.json())
+    ).map(res => res.json())
+  }
+
+  login(formData: auth): Observable<Response>{
+    return this.http.post(
+      `${this.config.BASE_URL}api/v1/rest-auth/login/`,
+      JSON.stringify(formData),
+      {headers: new Headers({'Content-Type': "application/json"})})
   }
 
 }

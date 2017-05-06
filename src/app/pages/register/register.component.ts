@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {EmailValidator, EqualPasswordsValidator} from '../../theme/validators';
 import {AuthService} from "../../shared/services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'register',
@@ -25,7 +26,7 @@ export class Register {
     password2: null,
   };
 
-  constructor(fb:FormBuilder, private authService: AuthService) {
+  constructor(fb:FormBuilder, private router: Router, private authService: AuthService) {
 
     this.form = fb.group({
       'username': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
@@ -66,6 +67,7 @@ export class Register {
         (data) => {
           // TODO 이메일 보냈다는 페이지나 콘솔로그 alert 띄워주면 될 듯?
           alert("이메일을 확인해주세요!");
+          this.router.navigate(['/login']);
         },
         (err) => {
           let errors = err.json();
