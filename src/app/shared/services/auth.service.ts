@@ -41,4 +41,13 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  getProfile(): Observable<Response>{
+    return this.http.get(
+      `${this.config.BASE_URL}api/v1/profile/me/`,
+      {headers: new Headers({
+        'Content-Type': "application/json",
+        "Authorization": `Token ${localStorage.getItem('auth_token')}`})}
+    ).map(res => res.json());
+  }
+
 }
