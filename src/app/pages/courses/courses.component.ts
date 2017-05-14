@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CourseService} from "./course.service";
 
 
@@ -31,22 +31,25 @@ import {CourseService} from "./course.service";
 })
 export class CoursesComponent implements OnInit {
 
-  //course: Course[];
-  result;
+  data;
 
-  constructor(private router: Router, private courseService: CourseService) {
+  constructor(private router: Router, private courseService: CourseService, private route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
     this.courseService.getCourses().subscribe(
       (data) => {
-        console.log(data);
+        this.data = data;
       },
       (err) => {
         console.log(err);
+        this.data = null;
       }
-    )
+    );
   }
 
+  courseSearch(){
+
+  }
 }

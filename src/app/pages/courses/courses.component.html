@@ -1,3 +1,19 @@
-<p>
-  courses works!
-</p>
+<div class="row">
+  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 col-md-offset-6 col-lg-offset-6 col-xl-offset-6">
+    <div class="search">
+      <input id="searchInput" type="text" placeholder="Search for course">
+      <i class="ion-ios-search-strong" (click)="courseSearch()"></i>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+    <div *ngFor="let item of data">
+      <a [routerLink]="[item.id]">{{ item.title }}</a>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
