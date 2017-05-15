@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CourseService} from '../course.service';
-import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Params} from '@angular/router';
 
 @Component({
   selector: 'app-course',
@@ -9,14 +9,24 @@ import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
 })
 export class CourseComponent implements OnInit {
 
-  data: object;
+  data;
+  id: string;
 
-  constructor(private courseService: CourseService) { }
+  constructor(private courseService: CourseService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.courseService.getCourses()
-      .mergeMap(val => val)
-      .filter(data => data.id === 3)
-  }
+    this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+      this.data = this.courseService.getCourse(this.id).subscribe(
+        (data) => {
+          this.data = data;
+        },
+        (err) => {
+          console.log(err);
+          this.data = null;
+        }
+      );
+    });
+  };
 
 }
