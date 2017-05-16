@@ -9,6 +9,7 @@ import {CourseService} from "./course.service";
 import { CourseComponent } from './course/course.component';
 import {ActivatedRouteSnapshot} from '@angular/router';
 import { CourseEditComponent } from './course-edit/course-edit.component';
+import { CourseAddComponent } from './course-add/course-add.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { CourseEditComponent } from './course-edit/course-edit.component';
     CoursesComponent,
     CourseComponent,
     CourseEditComponent,
+    CourseAddComponent,
   ],
   providers: [
     CourseService,
