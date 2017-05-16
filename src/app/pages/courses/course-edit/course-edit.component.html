@@ -1,6 +1,9 @@
 <div class="row">
   <div class="col-xs-12">
+
     <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" enctype='multipart/form-data'>
+
+      <!--submit&cancel-->
       <div class="row">
         <div class="col-xs-12">
           <button
@@ -10,6 +13,8 @@
           <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
         </div>
       </div>
+
+      <!--title-->
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
@@ -22,15 +27,64 @@
           </div>
         </div>
       </div>
+
+      <!--year-->
       <div class="row">
         <div class="col-xs-12">
-          <a [routerLink]="['/', course.attachments]">aaasdf</a>
+          <div class="form-group">
+            <label for="year">year</label>
+            <input
+              type="number"
+              id="year"
+              class="form-control"
+              formControlName="year">
+          </div>
+        </div>
+      </div>
+
+      <!--semester-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="semester">semester</label>
+            <select [(ngModel)]="course.semester" formControlName="semester" id="semester" class="form-control">
+              <option
+                *ngFor="let obj of SEMESTER"
+                [value]="obj.value"
+                [attr.selected]="obj.value == course.semester ? true : null">
+                {{ obj.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!--content-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="content">content</label>
+            <textarea
+              rows="8"
+              cols="30"
+              id="content"
+              class="form-control"
+              formControlName="content"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- attachments -->
+      <div class="row" *ngIf="course.attachments">
+        <div class="col-xs-12">
+          Current File
+          <a href="{{ course.attachments }}">{{ course.attachments.split('/').pop() }}</a>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="attachments">Attachments URL</label>
+            <label for="attachments">New File</label>
             <input
               type="file"
               id="attachments"
@@ -41,24 +95,7 @@
           </div>
         </div>
       </div>
-      <!--<div class="row">-->
-        <!--<div class="col-xs-12">-->
-          <!--<img [src]="attachments.value" class="img-responsive">-->
-        <!--</div>-->
-      <!--</div>-->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="content">content</label>
-            <textarea
-              type="text"
-              id="content"
-              class="form-control"
-              formControlName="content"
-              rows="6"></textarea>
-          </div>
-        </div>
-      </div>
+
     </form>
   </div>
 </div>

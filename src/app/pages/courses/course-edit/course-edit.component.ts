@@ -15,6 +15,14 @@ export class CourseEditComponent implements OnInit {
   course = new Course();
   courseForm: FormGroup;
 
+
+  SEMESTER = [
+    { 'value' : 0, 'name' : '1학기' },
+    { 'value' : 1, 'name' : '여름 계절학기' },
+    { 'value' : 2, 'name' : '2학기' },
+    { 'value' : 3, 'name' : '겨울 계절학기' },
+  ];
+
   // public fileUploaderOptions: NgUploaderOptions = {
   //   url: '',
   // };
