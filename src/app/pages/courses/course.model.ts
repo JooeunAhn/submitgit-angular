@@ -9,5 +9,6 @@ export class Course {
     public attachments: any = null,
     public created_at: string = null,
     public updated_at: string = null,
+    public repository_set: any = null,
   ) { }
 }

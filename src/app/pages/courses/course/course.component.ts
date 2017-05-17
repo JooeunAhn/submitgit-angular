@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CourseService} from '../course.service';
 import {ActivatedRoute, ActivatedRouteSnapshot, Params, Router} from '@angular/router';
+import {AuthService} from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-course',
@@ -9,28 +10,53 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Params, Router} from '@angular/r
 })
 export class CourseComponent implements OnInit {
 
-  data;
+  course;
+  profile;
   id: string;
+  // isOwner: boolean = false;
 
-  constructor(private courseService: CourseService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private courseService: CourseService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService,
+  ) { }
 
   ngOnInit() {
-    this.route.params.subscribe((params: Params) => {
-      this.id = params['id'];
-      this.data = this.courseService.getCourse(this.id).subscribe(
-        (data) => {
-          this.data = data;
-        },
-        (err) => {
-          console.log(err);
-          this.data = null;
-        }
-      );
-    });
+    // course data subscribe
+    this.route.params.subscribe(
+      (params: Params) => {
+        this.id = params['id'];
+        this.courseService.getCourse(this.id).subscribe(
+          (data) => {
+            this.course = data;
+          },
+          (err) => {
+            console.log(err);
+            this.course = null;
+          }
+        );
+      }
+    );
+
+    // get profile info
+    this.authService.getProfile().subscribe(
+      profile => {
+        this.profile = profile;
+        // this.isOwner = (this.profile.username == this.course.professor.profile.username ? true : false);
+      },
+      err => {
+        console.log(err);
+        this.profile = null;
+      }
+    );
   }
 
   onDelete() {
-    if (confirm('Are you sure you want to delete the course and related assignments?')) {
+    if (confirm('Are you sure you want to delete the course and related assignments?')
+      && this.profile.username == this.course.professor.profile.username
+      && this.course != null
+    ) {
       this.courseService.deleteCourse(this.id).subscribe(
         (data) => {
           this.router.navigate(['../'], {relativeTo: this.route});

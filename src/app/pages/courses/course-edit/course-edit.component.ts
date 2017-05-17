@@ -3,6 +3,7 @@ import {CourseService} from '../course.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Course} from '../course.model';
+import {AuthService} from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-course-edit',
@@ -14,6 +15,7 @@ export class CourseEditComponent implements OnInit {
   course = new Course();
   courseForm: FormGroup;
   attachmentsChanged: boolean = false;
+  profile;
 
   SEMESTER = [
     { 'value' : 0, 'name' : '1학기' },
@@ -22,7 +24,7 @@ export class CourseEditComponent implements OnInit {
     { 'value' : 3, 'name' : '겨울 계절학기' },
   ];
 
-  constructor(private courseService: CourseService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private courseService: CourseService, private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.route.parent.params.subscribe(params => {
@@ -38,6 +40,18 @@ export class CourseEditComponent implements OnInit {
         }
       );
     });
+
+    // get profile info
+    this.authService.getProfile().subscribe(
+      profile => {
+        this.profile = profile;
+        // this.isOwner = (this.profile.username == this.data.professor.profile.username ? true : false);
+      },
+      err => {
+        console.log(err);
+        this.profile = null;
+      }
+    );
   }
 
   initForm() {
@@ -55,22 +69,25 @@ export class CourseEditComponent implements OnInit {
   }
 
   onSubmit() {
-    // if (authenticated && exists) {
-    let attachments;
-    if (this.attachmentsChanged) {
-      attachments = this.course.attachments;
-    } else {
-      attachments = null;
-    }
-    this.courseService.updateCourse(this.id, this.courseForm.value, attachments).subscribe(
-      data => {
-        this.onCancel();
-      },
-      err => {
-        console.log(err);
+    if (
+      this.course != null
+      && this.profile.username == this.course.professor.profile.username
+    ) {
+      let attachments;
+      if (this.attachmentsChanged) {
+        attachments = this.course.attachments;
+      } else {
+        attachments = null;
       }
-    );
-  // }
+      this.courseService.updateCourse(this.id, this.courseForm.value, attachments).subscribe(
+        data => {
+          this.onCancel();
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   fileChange(fileInput: any) {

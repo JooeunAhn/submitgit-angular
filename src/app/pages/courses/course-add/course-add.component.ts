@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CourseService} from '../course.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-course-add',
@@ -13,6 +14,7 @@ export class CourseAddComponent implements OnInit {
   courseForm: FormGroup;
   attachmentsChanged = false;
   attachments = null;
+  profile;
 
   SEMESTER = [
     { 'value' : 0, 'name' : '1학기' },
@@ -21,10 +23,22 @@ export class CourseAddComponent implements OnInit {
     { 'value' : 3, 'name' : '겨울 계절학기' },
   ];
 
-  constructor(private courseService: CourseService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private courseService: CourseService, private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit() {
     this.initForm();
+
+    // get profile info
+    this.authService.getProfile().subscribe(
+      profile => {
+        this.profile = profile;
+        // this.isOwner = (this.profile.username == this.data.professor.profile.username ? true : false);
+      },
+      err => {
+        console.log(err);
+        this.profile = null;
+      }
+    );
   }
 
   initForm() {
@@ -38,7 +52,7 @@ export class CourseAddComponent implements OnInit {
   }
 
   onSubmit() {
-    // if (authenticated && doesnotexist) {
+    if (this.profile.is_prof) {
       this.courseService.addCourse(this.courseForm.value, this.attachments).subscribe(
         data => {
           this.onCancel();
@@ -47,7 +61,7 @@ export class CourseAddComponent implements OnInit {
           console.log(err);
         }
       );
-    // }
+    }
   }
 
   onCancel() {
