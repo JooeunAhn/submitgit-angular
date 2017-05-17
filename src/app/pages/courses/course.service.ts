@@ -80,4 +80,14 @@ export class CourseService {
     ).map(res => res.json());
   }
 
+  deleteCourse(id: string) {
+    return this.http.delete(
+      `${this.config.BASE_URL}api/v1/course/` + id + `/`,
+      {
+        headers: new Headers({
+          'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        })
+      },
+    ).map(res => res.json());
+  }
 }
