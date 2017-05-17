@@ -13,6 +13,10 @@ export const routes: Routes = [
     component: CoursesComponent,
     children: [
       {
+        path: 'add',
+        component: CourseAddComponent,
+      },
+      {
         path: ':id',
         component: CourseComponent,
         children: [
@@ -21,10 +25,6 @@ export const routes: Routes = [
             component: CourseEditComponent,
           },
         ],
-      },
-      {
-        path: 'add',
-        component: CourseAddComponent,
       },
     ],
   },

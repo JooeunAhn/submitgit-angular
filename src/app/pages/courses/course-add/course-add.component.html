@@ -47,11 +47,11 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="semester">semester</label>
-            <select [(ngModel)]="course.semester" formControlName="semester" id="semester" class="form-control">
+            <select formControlName="semester" id="semester" class="form-control">
               <option
                 *ngFor="let obj of SEMESTER"
                 [value]="obj.value"
-                [attr.selected]="obj.value == course.semester ? true : null">
+                [attr.selected]="obj.value == '0' ? true : null">
                 {{ obj.name }}
               </option>
             </select>
@@ -84,8 +84,7 @@
               id="attachments"
               formControlName="attachments"
               class="form-control"
-              (change)="fileChange($event)"
-              #attachments>
+              (change)="fileChange($event)">
           </div>
         </div>
       </div>

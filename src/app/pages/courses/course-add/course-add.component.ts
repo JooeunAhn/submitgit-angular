@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CourseService} from '../course.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -14,7 +14,14 @@ export class CourseAddComponent implements OnInit {
   attachmentsChanged = false;
   attachments = null;
 
-  constructor(private courseService: CourseService, private router: Router) { }
+  SEMESTER = [
+    { 'value' : 0, 'name' : '1학기' },
+    { 'value' : 1, 'name' : '여름 계절학기' },
+    { 'value' : 2, 'name' : '2학기' },
+    { 'value' : 3, 'name' : '겨울 계절학기' },
+  ];
+
+  constructor(private courseService: CourseService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.initForm();
@@ -23,7 +30,7 @@ export class CourseAddComponent implements OnInit {
   initForm() {
     this.courseForm = new FormGroup({
       'title': new FormControl('', Validators.required),
-      // 'attachments': new FormControl(),
+      'attachments': new FormControl(),
       'content': new FormControl('', Validators.required),
       'year': new FormControl('', Validators.required),
       'semester': new FormControl('', Validators.required),
@@ -32,10 +39,20 @@ export class CourseAddComponent implements OnInit {
 
   onSubmit() {
     // if (authenticated && doesnotexist) {
-      this.courseService.addCourse(this.courseForm.value, this.attachments);
+      this.courseService.addCourse(this.courseForm.value, this.attachments).subscribe(
+        data => {
+          this.onCancel();
+        },
+        err => {
+          console.log(err);
+        }
+      );
     // }
   }
 
+  onCancel() {
+    this.router.navigate(['../'], {relativeTo: this.route});
+  }
 
   fileChange(fileInput: any) {
     this.attachmentsChanged = true;
