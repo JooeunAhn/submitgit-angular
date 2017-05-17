@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CourseService} from '../course.service';
 import {ActivatedRoute, ActivatedRouteSnapshot, Params, Router} from '@angular/router';
 import {AuthService} from '../../../shared/services/auth.service';
+import {Course} from '../course.model';
 
 @Component({
   selector: 'app-course',
@@ -59,6 +60,15 @@ export class CourseComponent implements OnInit {
     ) {
       this.courseService.deleteCourse(this.id).subscribe(
         (data) => {
+          this.courseService.getCourses().subscribe(
+            courses => {
+              const _courses: Course[] = courses;
+              this.courseService.coursesChanged.emit(_courses);
+            },
+            err => {
+              console.log(err);
+            }
+          );
           this.router.navigate(['../'], {relativeTo: this.route});
         },
         (err) => {

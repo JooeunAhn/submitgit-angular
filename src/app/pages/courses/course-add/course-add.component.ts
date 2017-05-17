@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CourseService} from '../course.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../shared/services/auth.service';
+import {Course} from '../course.model';
 
 @Component({
   selector: 'app-course-add',
@@ -15,6 +16,8 @@ export class CourseAddComponent implements OnInit {
   attachmentsChanged = false;
   attachments = null;
   profile;
+  @Output() cancelEvent = new EventEmitter<Course[]>();
+  courses;
 
   SEMESTER = [
     { 'value' : 0, 'name' : '1학기' },
@@ -55,6 +58,15 @@ export class CourseAddComponent implements OnInit {
     if (this.profile.is_prof) {
       this.courseService.addCourse(this.courseForm.value, this.attachments).subscribe(
         data => {
+          this.courseService.getCourses().subscribe(
+            courses => {
+              const _courses: Course[] = courses;
+              this.courseService.coursesChanged.emit(_courses);
+            },
+            err => {
+              console.log(err);
+            }
+          );
           this.onCancel();
         },
         err => {
@@ -65,6 +77,16 @@ export class CourseAddComponent implements OnInit {
   }
 
   onCancel() {
+    this.courseService.getCourses().subscribe(
+      data => {
+        this.courses = data;
+        this.cancelEvent.emit(this.courses);
+      },
+      err => {
+        console.log(err);
+        this.courses = null;
+      }
+    );
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 

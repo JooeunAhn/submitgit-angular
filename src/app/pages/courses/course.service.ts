@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {EventEmitter, Inject, Injectable} from '@angular/core';
 import {AppConfig} from '../../app.config';
 import {Observable} from 'rxjs/Observable';
 import {Headers, Http, Response} from '@angular/http';
@@ -8,7 +8,10 @@ import {Course} from './course.model';
 @Injectable()
 export class CourseService {
 
+  public coursesChanged: EventEmitter<Course[]>;
+
   constructor(@Inject('APP_CONFIG') private config: AppConfig, private http: Http) {
+    this.coursesChanged = new EventEmitter<Course[]>();
   }
 
   getCourses(): Observable<Course[]> {
@@ -78,6 +81,8 @@ export class CourseService {
         })
       },
     ).map(res => res.json());
+
+    // return returnobj;
   }
 
   deleteCourse(id: string) {

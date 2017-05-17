@@ -29,10 +29,10 @@ export class CourseEditComponent implements OnInit {
   ngOnInit() {
     this.route.parent.params.subscribe(params => {
       this.id = params['id'];
+      this.initForm();
       this.courseService.getCourse(this.id).subscribe(
         (data) => {
           this.course = data;
-          this.initForm();
         },
         (err) => {
           console.log(err);
@@ -56,11 +56,11 @@ export class CourseEditComponent implements OnInit {
 
   initForm() {
     this.courseForm = new FormGroup({
-      'title': new FormControl(this.course['title'], Validators.required),
-      // 'attachments': new FormControl(),
-      'content': new FormControl(this.course['content'], Validators.required),
-      'year': new FormControl(this.course['year'], Validators.required),
-      'semester': new FormControl(this.course['semester'], Validators.required),
+      'title': new FormControl(this.course.title, Validators.required),
+      'attachments': new FormControl(),
+      'content': new FormControl(this.course.content, Validators.required),
+      'year': new FormControl(this.course.year, Validators.required),
+      'semester': new FormControl(this.course.semester, Validators.required),
     });
   }
 
@@ -81,6 +81,15 @@ export class CourseEditComponent implements OnInit {
       }
       this.courseService.updateCourse(this.id, this.courseForm.value, attachments).subscribe(
         data => {
+          this.courseService.getCourses().subscribe(
+            courses => {
+              const _courses: Course[] = courses;
+              this.courseService.coursesChanged.emit(_courses);
+            },
+            err => {
+              console.log(err);
+            }
+          );
           this.onCancel();
         },
         err => {

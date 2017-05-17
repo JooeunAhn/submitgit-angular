@@ -20,7 +20,9 @@ export class CoursesComponent implements OnInit {
     private courseService: CourseService,
     private route: ActivatedRoute,
     private authService: AuthService,
-  ) { }
+  ) {
+    this.courseService.coursesChanged.subscribe(data => this.updateCourses(data));
+  }
 
   ngOnInit() {
     this.courseService.getCourses().subscribe(
@@ -44,6 +46,10 @@ export class CoursesComponent implements OnInit {
         this.profile = null;
       }
     );
+  }
+
+  updateCourses(courses) {
+    this.course = courses;
   }
 
   courseSearch(){
