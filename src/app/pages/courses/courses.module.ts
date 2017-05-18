@@ -7,8 +7,9 @@ import {routing} from "./courses.routing";
 import {CoursesComponent} from "./courses.component";
 import {CourseService} from "./course.service";
 import { CourseComponent } from './course/course.component';
-import { CourseAddComponent } from './course-add/course-add.component';
 import {ActivatedRouteSnapshot} from '@angular/router';
+import { CourseEditComponent } from './course-edit/course-edit.component';
+import { CourseAddComponent } from './course-add/course-add.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import {ActivatedRouteSnapshot} from '@angular/router';
   declarations: [
     CoursesComponent,
     CourseComponent,
+    CourseEditComponent,
     CourseAddComponent,
   ],
   providers: [

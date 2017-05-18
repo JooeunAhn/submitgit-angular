@@ -1,28 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CourseService} from "./course.service";
+import {AuthService} from '../../shared/services/auth.service';
 
-
-// export class Repository extends Serializable {
-//   student: string;
-//   course: string;
-//   isVerified: string;
-//   url: string;
-//   createdAt: string;
-//   updatedAt: string;
-// }
-//
-// export class Course extends Serializable {
-//   professor: string;
-//   students: string;
-//   title: string;
-//   content: string;
-//   semester: string;
-//   attachment: string;
-//   createdAt: string;
-//   updatedAt: string;
-// }
-//
 
 @Component({
   selector: 'app-courses',
@@ -31,22 +11,45 @@ import {CourseService} from "./course.service";
 })
 export class CoursesComponent implements OnInit {
 
-  data;
+  course;
+  profile;
+  // isOwner;
 
-  constructor(private router: Router, private courseService: CourseService, private route: ActivatedRoute) {
-
+  constructor(
+    private router: Router,
+    private courseService: CourseService,
+    private route: ActivatedRoute,
+    private authService: AuthService,
+  ) {
+    this.courseService.coursesChanged.subscribe(data => this.updateCourses(data));
   }
 
   ngOnInit() {
     this.courseService.getCourses().subscribe(
       (data) => {
-        this.data = data;
+        this.course = data;
       },
       (err) => {
         console.log(err);
-        this.data = null;
+        this.course = null;
       }
     );
+
+    // get profile info
+    this.authService.getProfile().subscribe(
+      profile => {
+        this.profile = profile;
+        // this.isOwner = (this.profile.username == this.course.professor.profile.username ? true : false);
+      },
+      err => {
+        console.log(err);
+        this.profile = null;
+      }
+    );
+  }
+
+  updateCourses(courses) {
+    this.course = courses;
   }
 
   courseSearch(){
