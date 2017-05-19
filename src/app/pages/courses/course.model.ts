@@ -10,5 +10,6 @@ export class Course {
     public created_at: string = null,
     public updated_at: string = null,
     public repository_set: any = null,
+    public assignment_set: any = null,
   ) { }
 }

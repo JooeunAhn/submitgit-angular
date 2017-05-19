@@ -16,7 +16,6 @@ export class CourseAddComponent implements OnInit {
   attachmentsChanged = false;
   attachments = null;
   profile;
-  @Output() cancelEvent = new EventEmitter<Course[]>();
   courses;
 
   SEMESTER = [
@@ -77,16 +76,6 @@ export class CourseAddComponent implements OnInit {
   }
 
   onCancel() {
-    this.courseService.getCourses().subscribe(
-      data => {
-        this.courses = data;
-        this.cancelEvent.emit(this.courses);
-      },
-      err => {
-        console.log(err);
-        this.courses = null;
-      }
-    );
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 

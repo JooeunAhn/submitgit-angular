@@ -1,0 +1,162 @@
+<div class="row" *ngIf="assignmentForm">
+  <div class="col-xs-12">
+
+    <form [formGroup]="assignmentForm" (ngSubmit)="onSubmit()" enctype='multipart/form-data'>
+
+      <!--submit&cancel-->
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success"
+            >Save</button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+
+      <!--course-->
+      <!--<div class="row">-->
+        <!--<div class="col-xs-12">-->
+          <!--<div class="form-group">-->
+            <!--<label for="course">course</label>-->
+            <!--<select formControlName="course" id="course" class="form-control">-->
+              <!--<option-->
+                <!--*ngFor="let obj of courses"-->
+                <!--[value]="obj.id"-->
+                <!--[attr.selected]="obj.id == course.id ? true : null">-->
+                <!--{{ obj.title }}, {{ obj.id }}-->
+              <!--</option>-->
+            <!--</select>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <!--title-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="title">title</label>
+            <input
+              type="text"
+              id="title"
+              formControlName="title"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <!--content-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="content">content</label>
+            <textarea
+              rows="8"
+              cols="30"
+              id="content"
+              class="form-control"
+              formControlName="content"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!--deadline-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="deadline">deadline</label>
+            <!--<input-->
+              <!--type="text"-->
+              <!--id="deadline"-->
+              <!--formControlName="deadline"-->
+              <!--class="form-control">-->
+            <input
+              ng2-datetime-picker
+              id="deadline"
+              formControlName="deadline"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <!--test_file_name-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="test_file_name">file_name</label>
+            <input
+              type="text"
+              id="test_file_name"
+              formControlName="test_file_name"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <!--test_langids-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label >test_langids</label>
+            <input *ngFor="let control of assignmentForm.controls['test_langids'].controls"
+                   type="checkbox" id="{{ control.name }}" value="{{ control.value }}" [formControl]="control" />
+          </div>
+        </div>
+      </div>
+
+      <!-- attachments -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="attachments">New File</label>
+            <input
+              type="file"
+              id="attachments"
+              formControlName="attachments"
+              class="form-control"
+              (change)="fileChange($event)">
+          </div>
+        </div>
+      </div>
+
+      <!--test_input-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="test_input">test_input</label>
+            <textarea
+              rows="8"
+              cols="30"
+              id="test_input"
+              class="form-control"
+              formControlName="test_input"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!--test_output-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="test_output">test_output</label>
+            <textarea
+              rows="8"
+              cols="30"
+              id="test_output"
+              class="form-control"
+              formControlName="test_output"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!--is_test-->
+      <!--<div class="row">-->
+        <!--<div class="col-xs-12">-->
+          <!--<div class="form-group">-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+
+    </form>
+  </div>
+</div>

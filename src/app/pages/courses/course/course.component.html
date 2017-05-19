@@ -3,10 +3,18 @@
 <div class="row" *ngIf="course && profile">
   {{ course.title }}<br>
   {{ course.content }}<br>
+  {{ course.professor.profile.name }}<br>
+  {{ course.year }}<br>
+  {{ course.semester }}<br>
+  {{ course.attachments }}<br>
+  <div *ngFor="let assignment of course.assignment_set">
+    <a [routerLink]="['assignments', assignment.id]">{{ assignment.title }}</a>
+  </div>
 </div>
 <div class="row" *ngIf="course && profile">
-  <button class="btn btn-info" [routerLink]="['edit']">수정하기</button>
+  <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course.professor.profile.username == profile.username">수정하기</button>
   <button class="btn btn-danger" (click)="onDelete()" *ngIf="course.professor.profile.username == profile.username">삭제하기</button>
+  <button class="btn btn-outline-secondary" [routerLink]="['assignments', 'add']" *ngIf="course.professor.profile.username == profile.username">과제생성</button>
 </div>
 
 
