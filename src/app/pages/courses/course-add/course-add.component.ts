@@ -18,6 +18,7 @@ export class CourseAddComponent implements OnInit {
   profile;
   courses;
 
+  // TODO SEMESTER, LANG_CHOICE는 서비스에 injectable로 만들기
   SEMESTER = [
     { 'value' : 0, 'name' : '1학기' },
     { 'value' : 1, 'name' : '여름 계절학기' },

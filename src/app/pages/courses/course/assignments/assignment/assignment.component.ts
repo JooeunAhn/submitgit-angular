@@ -1,24 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../../../../shared/services/auth.service';
 import {CourseService} from '../../../course.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assignment} from '../assignment.model';
 import {Course} from '../../../course.model';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-assignment',
   templateUrl: './assignment.component.html',
   styleUrls: ['./assignment.component.scss']
 })
-export class AssignmentComponent implements OnInit {
+export class AssignmentComponent implements OnInit, OnDestroy {
 
   id: string;
   assignment: Assignment;
   profile;
   course;
   courseid: string;
+  asch: Subscription;
 
-  constructor(private authService: AuthService, private courseService: CourseService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private authService: AuthService, private courseService: CourseService, private route: ActivatedRoute, private router: Router) {
+    this.asch = this.courseService.assignmentChanged.subscribe(data => this.updateAssignment(data));
+  }
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -69,8 +73,8 @@ export class AssignmentComponent implements OnInit {
           this.router.navigate(['../'], {relativeTo: this.route});
           this.courseService.getCourse(this.id).subscribe(
             course => {
-              const _assignment: Course = course;
-              this.courseService.assignmentChanged.emit(_assignment);
+              const _course: Course = course;
+              this.courseService.assignmentsChanged.emit(_course);
             },
             err => {
               console.log(err);
@@ -84,4 +88,11 @@ export class AssignmentComponent implements OnInit {
     }
   }
 
+  updateAssignment(assignment) {
+    this.assignment = assignment;
+  }
+
+  ngOnDestroy() {
+    this.asch.unsubscribe();
+  }
 }

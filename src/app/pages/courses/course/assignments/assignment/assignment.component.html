@@ -1,8 +1,17 @@
 {{ assignment?.title }}<br>
 {{ assignment?.deadline }}<br>
+
+<button
+  class="btn btn-outline-info"
+  [routerLink]="['edit']"
+  *ngIf="profile?.username == course?.professor.profile.username">
+  수정하기
+</button>
 <button
   class="btn btn-outline-danger"
   (click)="onDelete()"
   *ngIf="profile?.username == course?.professor.profile.username">
   삭제하기
 </button>
+
+<router-outlet></router-outlet>

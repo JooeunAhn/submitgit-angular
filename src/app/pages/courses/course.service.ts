@@ -11,11 +11,13 @@ import {forEach} from '@angular/router/src/utils/collection';
 export class CourseService {
 
   public coursesChanged: EventEmitter<Course[]>;
-  public assignmentChanged: EventEmitter<Course>;
+  public assignmentsChanged: EventEmitter<Course>;
+  public assignmentChanged: EventEmitter<Assignment>;
 
   constructor(@Inject('APP_CONFIG') private config: AppConfig, private http: Http) {
     this.coursesChanged = new EventEmitter<Course[]>();
-    this.assignmentChanged = new EventEmitter<Course>();
+    this.assignmentsChanged = new EventEmitter<Course>();
+    this.assignmentChanged = new EventEmitter<Assignment>();
   }
 
   getCourses(): Observable<Course[]> {
@@ -137,7 +139,7 @@ export class CourseService {
 
 
   // TODO body에 append할것들 추가
-  addAssignment(fd, attachments, id) {
+  addAssignment(fd, attachments, courseid) {
     let body = new FormData();
     let test_langids = '';
 
@@ -148,7 +150,7 @@ export class CourseService {
     });
 
     body.append('title', fd.title);
-    body.append('course', id);
+    body.append('course', courseid);
     body.append('content', fd.content);
     body.append('is_test', 'false');
     body.append('deadline', fd.deadline);
@@ -186,16 +188,31 @@ export class CourseService {
   }
 
   // TODO body에 추가할것들
-  updateAssignment(id: string, fd, attachments) {
+  updateAssignment(id: string, fd, attachments, courseid) {
     let body = new FormData();
+    let test_langids = '';
+
+    fd.test_langids.forEach(function (val, idx) {
+      if (val == true) {
+        test_langids += idx + ',';
+      }
+    });
 
     body.append('title', fd.title);
-    if ( attachments !== null ) {
+    body.append('course', courseid);
+    body.append('content', fd.content);
+    body.append('is_test', fd.is_test);
+    body.append('deadline', fd.deadline);
+    body.append('test_file_name', fd.test_file_name);
+
+    body.append('test_langids', test_langids);
+    if (attachments != null) {
       body.append('attachments', attachments);
     }
-    body.append('content', fd.content);
-    body.append('year', fd.year);
-    body.append('semester', fd.semester);
+    if (fd.test_input != null && fd.test_output != null) {
+      body.append('test_input', fd.test_input);
+      body.append('test_output', fd.test_output);
+    }
 
     return this.http.put(
       `${this.config.BASE_URL}api/v1/assignment/` + id + `/`,

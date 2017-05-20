@@ -80,7 +80,6 @@ export class AssignmentAddComponent implements OnInit {
     this.authService.getProfile().subscribe(
       profile => {
         this.profile = profile;
-        // this.isOwner = (this.profile.username == this.data.professor.profile.username ? true : false);
       },
       err => {
         console.log(err);
@@ -131,8 +130,8 @@ export class AssignmentAddComponent implements OnInit {
         data => {
           this.courseService.getCourse(this.id).subscribe(
             course => {
-              const _assignment: Course = course;
-              this.courseService.assignmentChanged.emit(_assignment);
+              const _course: Course = course;
+              this.courseService.assignmentsChanged.emit(_course);
             },
             err => {
               console.log(err);

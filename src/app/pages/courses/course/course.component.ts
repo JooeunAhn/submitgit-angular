@@ -24,7 +24,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
   ) {
-    this.asch = this.courseService.assignmentChanged.subscribe(data => this.updateCourse(data));
+    this.asch = this.courseService.assignmentsChanged.subscribe(data => this.updateCourse(data));
   }
 
   ngOnInit() {
