@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CourseService} from "./course.service";
 import {AuthService} from '../../shared/services/auth.service';
+import {Subscription} from 'rxjs/Subscription';
 
 
 @Component({
@@ -9,19 +9,18 @@ import {AuthService} from '../../shared/services/auth.service';
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss']
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnDestroy {
 
   course;
   profile;
+  crch: Subscription;
   // isOwner;
 
   constructor(
-    private router: Router,
     private courseService: CourseService,
-    private route: ActivatedRoute,
     private authService: AuthService,
   ) {
-    this.courseService.coursesChanged.subscribe(data => this.updateCourses(data));
+    this.crch = this.courseService.coursesChanged.subscribe(data => this.updateCourses(data));
   }
 
   ngOnInit() {
@@ -52,7 +51,11 @@ export class CoursesComponent implements OnInit {
     this.course = courses;
   }
 
-  courseSearch(){
+  courseSearch() {
 
+  }
+
+  ngOnDestroy() {
+    this.crch.unsubscribe();
   }
 }
