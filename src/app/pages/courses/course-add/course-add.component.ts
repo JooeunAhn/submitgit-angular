@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {CourseService} from '../course.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -18,15 +18,7 @@ export class CourseAddComponent implements OnInit {
   profile;
   courses;
 
-  // TODO SEMESTER, LANG_CHOICE는 서비스에 injectable로 만들기
-  SEMESTER = [
-    { 'value' : 0, 'name' : '1학기' },
-    { 'value' : 1, 'name' : '여름 계절학기' },
-    { 'value' : 2, 'name' : '2학기' },
-    { 'value' : 3, 'name' : '겨울 계절학기' },
-  ];
-
-  constructor(private courseService: CourseService, private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(@Inject('SEMESTER') private SEMESTER, private courseService: CourseService, private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit() {
     this.initForm();

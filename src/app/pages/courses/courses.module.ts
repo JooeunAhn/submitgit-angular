@@ -15,6 +15,32 @@ import { AssignmentComponent } from './course/assignments/assignment/assignment.
 import { AssignmentAddComponent } from './course/assignments/assignment-add/assignment-add.component';
 import { AssignmentEditComponent } from './course/assignments/assignment-edit/assignment-edit.component';
 
+export const SEMESTER = [
+  { 'value' : 0, 'name' : '1학기' },
+  { 'value' : 1, 'name' : '여름 계절학기' },
+  { 'value' : 2, 'name' : '2학기' },
+  { 'value' : 3, 'name' : '겨울 계절학기' },
+];
+
+export const LANG_CHOICES = [
+  { 'value': 0, 'name': 'Python' },
+  { 'value': 1, 'name': 'Ruby' },
+  { 'value': 2, 'name': 'Clojure' },
+  { 'value': 3, 'name': 'PHP' },
+  { 'value': 4, 'name': 'Javascript' },
+  { 'value': 5, 'name': 'Scala' },
+  { 'value': 6, 'name': 'Go' },
+  { 'value': 7, 'name': 'C' },
+  { 'value': 8, 'name': 'Java' },
+  { 'value': 9, 'name': 'VB.NET' },
+  { 'value': 10, 'name': 'C#' },
+  { 'value': 11, 'name': 'Bash' },
+  { 'value': 12, 'name': 'Objective-C' },
+  { 'value': 13, 'name': 'MySQL' },
+  { 'value': 14, 'name': 'Perl' },
+  { 'value': 15, 'name': 'C++' },
+];
+
 @NgModule({
   imports: [
     CommonModule,
@@ -37,6 +63,8 @@ import { AssignmentEditComponent } from './course/assignments/assignment-edit/as
   ],
   providers: [
     CourseService,
+    {provide: 'SEMESTER', useValue: SEMESTER},
+    {provide: 'LANG_CHOICES', useValue: LANG_CHOICES}
   ]
 })
 export class CoursesModule {}

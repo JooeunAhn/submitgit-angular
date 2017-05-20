@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../../../../shared/services/auth.service';
 import {CourseService} from '../../../course.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -21,26 +21,7 @@ export class AssignmentEditComponent implements OnInit {
   attachmentsChanged: boolean;
   profile;
 
-  LANG_CHOICES = [
-    { 'value': 0, 'name': 'Python' },
-    { 'value': 1, 'name': 'Ruby' },
-    { 'value': 2, 'name': 'Clojure' },
-    { 'value': 3, 'name': 'PHP' },
-    { 'value': 4, 'name': 'Javascript' },
-    { 'value': 5, 'name': 'Scala' },
-    { 'value': 6, 'name': 'Go' },
-    { 'value': 7, 'name': 'C' },
-    { 'value': 8, 'name': 'Java' },
-    { 'value': 9, 'name': 'VB.NET' },
-    { 'value': 10, 'name': 'C#' },
-    { 'value': 11, 'name': 'Bash' },
-    { 'value': 12, 'name': 'Objective-C' },
-    { 'value': 13, 'name': 'MySQL' },
-    { 'value': 14, 'name': 'Perl' },
-    { 'value': 15, 'name': 'C++' },
-  ];
-
-  constructor(private authService: AuthService, private courseService: CourseService, private router: Router, private route: ActivatedRoute) { }
+  constructor(@Inject('LANG_CHOICES') private LANG_CHOICES, private authService: AuthService, private courseService: CourseService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.parent.params.subscribe(
@@ -86,9 +67,6 @@ export class AssignmentEditComponent implements OnInit {
   }
 
   initForm() {
-    // TODO 여러개일때 로직 구현하기 - add에서는 필요없음..
-    // this.course.test_langids.includes("0") 이런식으로
-
     const _splitted = this.assignment.test_langids.split(',');
     _splitted.pop(); // 마지막에 있는 빈 오브젝트를 지우기 위함
     let formArr = [];

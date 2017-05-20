@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {CourseService} from '../course.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -17,14 +17,7 @@ export class CourseEditComponent implements OnInit {
   attachmentsChanged: boolean = false;
   profile;
 
-  SEMESTER = [
-    { 'value' : 0, 'name' : '1학기' },
-    { 'value' : 1, 'name' : '여름 계절학기' },
-    { 'value' : 2, 'name' : '2학기' },
-    { 'value' : 3, 'name' : '겨울 계절학기' },
-  ];
-
-  constructor(private courseService: CourseService, private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
+  constructor(@Inject('SEMESTER') private SEMESTER, private courseService: CourseService, private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.route.parent.params.subscribe(params => {
