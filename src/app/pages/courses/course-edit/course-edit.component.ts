@@ -12,7 +12,7 @@ import {AuthService} from '../../../shared/services/auth.service';
 })
 export class CourseEditComponent implements OnInit {
   id: string;
-  course = new Course();
+  course;
   courseForm: FormGroup;
   attachmentsChanged: boolean = false;
   profile;
@@ -29,10 +29,10 @@ export class CourseEditComponent implements OnInit {
   ngOnInit() {
     this.route.parent.params.subscribe(params => {
       this.id = params['id'];
-      this.initForm();
       this.courseService.getCourse(this.id).subscribe(
         (data) => {
           this.course = data;
+          this.initForm();
         },
         (err) => {
           console.log(err);
