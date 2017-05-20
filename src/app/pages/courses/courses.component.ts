@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CourseService} from "./course.service";
 import {AuthService} from '../../shared/services/auth.service';
 import {Subscription} from 'rxjs/Subscription';
+import {Course} from './course.model';
 
 
 @Component({
@@ -51,8 +52,15 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.course = courses;
   }
 
-  courseSearch() {
-
+  courseSearch(searchInput) {
+    this.courseService.searchCourses(searchInput).subscribe(
+      (data: Course[]) => {
+        this.courseService.coursesChanged.emit(data);
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   ngOnDestroy() {

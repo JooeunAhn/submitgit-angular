@@ -224,4 +224,16 @@ export class CourseService {
       },
     ).map(res => res.json());
   }
+
+  searchCourses(searchInput) {
+    return this.http.get(
+      `${this.config.BASE_URL}api/v1/course/?keyword=${searchInput}`,
+      {
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        })
+      }
+    ).map((res: Response) => res.json());
+  }
 }
