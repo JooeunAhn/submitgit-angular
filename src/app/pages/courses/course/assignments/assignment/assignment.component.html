@@ -1,2 +1,8 @@
 {{ assignment?.title }}<br>
-{{ assignment?.deadline }}
+{{ assignment?.deadline }}<br>
+<button
+  class="btn btn-outline-danger"
+  (click)="onDelete()"
+  *ngIf="profile?.username == course?.professor.profile.username">
+  삭제하기
+</button>

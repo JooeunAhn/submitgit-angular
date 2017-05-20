@@ -9,7 +9,7 @@
           <button
             type="submit"
             class="btn btn-success"
-            >Save</button>
+            [disabled]="!assignmentForm.valid">Save</button>
           <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
         </div>
       </div>

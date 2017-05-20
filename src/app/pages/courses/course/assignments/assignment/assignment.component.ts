@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../../../../shared/services/auth.service';
 import {CourseService} from '../../../course.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Assignment} from '../assignment.model';
+import {Course} from '../../../course.model';
 
 @Component({
   selector: 'app-assignment',
@@ -13,8 +14,11 @@ export class AssignmentComponent implements OnInit {
 
   id: string;
   assignment: Assignment;
+  profile;
+  course;
+  courseid: string;
 
-  constructor(private authService: AuthService, private courseService: CourseService, private route: ActivatedRoute) { }
+  constructor(private authService: AuthService, private courseService: CourseService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -23,7 +27,6 @@ export class AssignmentComponent implements OnInit {
         this.courseService.getAssignment(this.id).subscribe(
           assignment => {
             this.assignment = assignment;
-            console.log(assignment);
           },
           err => {
             console.log(err);
@@ -34,6 +37,51 @@ export class AssignmentComponent implements OnInit {
         console.log(err);
       }
     );
+
+    this.route.parent.parent.params.subscribe(
+      data => {
+        this.courseid = data['id'];
+        this.courseService.getCourse(this.courseid).subscribe(
+          course => {
+            this.course = course;
+          }
+        );
+      },
+      err => {
+        console.log(err);
+      }
+    )
+
+    this.authService.getProfile().subscribe(
+      data => {
+        this.profile = data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  onDelete() {
+    if (confirm(`Are you sure you want to delete this assignment ${this.assignment.title}?`)) {
+      this.courseService.deleteAssignment(this.id).subscribe(
+        data => {
+          this.router.navigate(['../'], {relativeTo: this.route});
+          this.courseService.getCourse(this.id).subscribe(
+            course => {
+              const _assignment: Course = course;
+              this.courseService.assignmentChanged.emit(_assignment);
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
 
 }
