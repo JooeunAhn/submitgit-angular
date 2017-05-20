@@ -13,5 +13,12 @@
   *ngIf="profile?.username == course?.professor.profile.username">
   삭제하기
 </button>
+<button
+  class="btn btn-outline-warning"
+  (click)="manualGrade()"
+  *ngIf="!profile?.is_prof"
+>
+  바로 채점하기
+</button>
 
 <router-outlet></router-outlet>

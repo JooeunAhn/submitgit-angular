@@ -187,7 +187,6 @@ export class CourseService {
     ).map(res => res.json());
   }
 
-  // TODO body에 추가할것들
   updateAssignment(id: string, fd, attachments, courseid) {
     let body = new FormData();
     let test_langids = '';
@@ -228,6 +227,18 @@ export class CourseService {
   searchCourses(searchInput) {
     return this.http.get(
       `${this.config.BASE_URL}api/v1/course/?keyword=${searchInput}`,
+      {
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        })
+      }
+    ).map((res: Response) => res.json());
+  }
+
+  manualGrade(id: string) {
+    return this.http.get(
+      `${this.config.BASE_URL}api/v1/manual/${id}/`,
       {
         headers: new Headers({
           'Content-Type': 'application/json',

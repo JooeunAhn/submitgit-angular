@@ -95,4 +95,15 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.asch.unsubscribe();
   }
+
+  manualGrade() {
+    this.courseService.manualGrade(this.id).subscribe(
+      data => {
+        console.log(data);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
 }
