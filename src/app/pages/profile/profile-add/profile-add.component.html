@@ -1,5 +1,60 @@
-<div class="auth-main">
-  <div class="auth-block">
-    <h1>profile-add</h1>
+<div class="row" *ngIf="profileForm">
+  <div class="col-xs-12">
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+
+      <!--submit-->
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!profileForm.valid">Save</button>
+        </div>
+      </div>
+
+      <!--name-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="name">name</label>
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <!--sid-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="sid">sid</label>
+            <input
+              type="text"
+              id="sid"
+              formControlName="sid"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <!--github_token-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="github_token">github_token</label>
+            <input
+              type="text"
+              id="github_token"
+              formControlName="github_token"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+
+    </form>
   </div>
 </div>
