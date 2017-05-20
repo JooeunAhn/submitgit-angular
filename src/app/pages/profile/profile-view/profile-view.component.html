@@ -1,3 +1,15 @@
-<p>
-  profile-view works!
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    {{ profile?.is_prof }}
+    {{ profile?.username }}
+    {{ profile?.email }}
+    {{ profile?.name }}
+    <div *ngIf="">
+      {{ profile?.sid }}
+      {{ profile?.github_token }}
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <button class="btn btn-info" [routerLink]="['..', 'edit']">수정하기</button>
+  </div>
+</div>

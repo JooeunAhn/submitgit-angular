@@ -4,7 +4,6 @@ import {Observable} from 'rxjs/Observable';
 import {Headers, Http, Response} from '@angular/http';
 import {Course} from './course.model';
 import {Assignment} from './course/assignments/assignment.model';
-import {forEach} from '@angular/router/src/utils/collection';
 
 
 @Injectable()
