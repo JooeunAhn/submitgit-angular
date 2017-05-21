@@ -13,7 +13,25 @@ export class ProfileService {
     return this.http.post(
       `${this.config.BASE_URL}api/v1/profile/`,
       JSON.stringify(formData),
-      {headers: new Headers({'Content-Type': "application/json"})}
-    ).map(res => res.json());
+      {
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        })
+      }).map(res => res.json());
+  }
+
+  updateProfile(formData): Observable<Response> {
+    let fd = new FormData();
+
+    return this.http.post(
+      `${this.config.BASE_URL}api/v1/profile/`,
+      JSON.stringify(formData),
+      {
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        })
+      }).map(res => res.json());
   }
 }

@@ -1,17 +1,8 @@
-<div class="row" *ngIf="profileForm">
-  <div class="col-xs-12">
+<div class="auth-main">
+  <div class="auth-block" *ngIf="profileForm">
+    <h1>Add Your Profile</h1>
 
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-
-      <!--submit-->
-      <div class="row">
-        <div class="col-xs-12">
-          <button
-            type="submit"
-            class="btn btn-success"
-            [disabled]="!profileForm.valid">Save</button>
-        </div>
-      </div>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="form-horizontal">
 
       <!--name-->
       <div class="row">
@@ -52,6 +43,16 @@
               formControlName="github_token"
               class="form-control">
           </div>
+        </div>
+      </div>
+
+      <!--submit-->
+      <div class="form-group row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!profileForm.valid">Save</button>
         </div>
       </div>
 

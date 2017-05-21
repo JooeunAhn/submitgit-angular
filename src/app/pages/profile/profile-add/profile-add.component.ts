@@ -16,23 +16,18 @@ export class ProfileAddComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, private profileService: ProfileService) { }
 
   ngOnInit() {
-    console.log('app-profile-add');
     this.authService.getProfile().subscribe(
       data => {
-        this.router.navigate(['..', 'view'], {relativeTo: this.route});
-      },
-      err => {
-        if (err.status == '403') {
-          this.initForm();
+        if (data == {}) {
+          this.router.navigate(['..', 'view'], {relativeTo: this.route});
         } else {
-          console.log(err);
+          this.initForm();
         }
       }
     );
   }
 
   initForm() {
-    console.log('아니 ㅅㅂ 왜안되는거지??')
     this.profileForm = new FormGroup({
       'is_prof': new FormControl(false),
       'name': new FormControl('', Validators.required),
