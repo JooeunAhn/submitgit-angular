@@ -6,6 +6,8 @@ import { ProfileComponent } from './profile.component';
 import {routing} from "./profile.routing";
 import {ReactiveFormsModule, FormsModule} from "@angular/forms";
 import {NgaModule} from "../../theme/nga.module";
+import {NgbDropdownModule, NgbModalModule} from "@ng-bootstrap/ng-bootstrap";
+import { ModalComponent } from './profile-add/modal/modal.component';
 
 @NgModule({
   imports: [
@@ -14,7 +16,12 @@ import {NgaModule} from "../../theme/nga.module";
     ReactiveFormsModule,
     FormsModule,
     NgaModule,
+    NgbDropdownModule,
+    NgbModalModule,
   ],
-  declarations: [ProfileAddComponent, ProfileViewComponent, ProfileComponent]
+  entryComponents: [
+    ModalComponent,
+  ],
+  declarations: [ProfileAddComponent, ProfileViewComponent, ProfileComponent, ModalComponent]
 })
 export class ProfileModule { }

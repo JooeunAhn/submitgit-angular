@@ -1,4 +1,4 @@
-import {Injectable, Inject} from '@angular/core';
+import {Injectable, Inject, EventEmitter} from '@angular/core';
 import {Http, Response, Headers} from "@angular/http";
 import {Observable} from "rxjs";
 import {AppConfig} from "../../app.config";
@@ -18,6 +18,8 @@ interface authSignUp{
 
 @Injectable()
 export class AuthService {
+
+  public githubUsernameEventEmitter = new EventEmitter<any>();
 
   constructor(@Inject ('APP_CONFIG') private config: AppConfig, private http: Http, private router: Router) { }
 
@@ -48,6 +50,17 @@ export class AuthService {
         'Content-Type': "application/json",
         "Authorization": `Token ${localStorage.getItem('auth_token')}`})}
     ).map(res => res.json());
+  }
+
+  postProfile(data){
+    let body = JSON.stringify(data);
+    return this.http.post(
+      `${this.config.BASE_URL}api/v1/profile/`,
+      body,
+      {headers: new Headers({
+        'Content-Type': "application/json",
+        "Authorization": `Token ${localStorage.getItem('auth_token')}`
+      })}).map(res=>res.json());
   }
 
 }

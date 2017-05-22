@@ -3,6 +3,8 @@ import {FormGroup, AbstractControl, FormBuilder, Validators} from "@angular/form
 import {Router} from "@angular/router";
 import {AuthService} from "../../../shared/services/auth.service";
 import {Http} from "@angular/http";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ModalComponent} from "./modal/modal.component";
 
 @Component({
   selector: 'app-profile-add',
@@ -15,28 +17,47 @@ export class ProfileAddComponent implements OnInit {
   public is_prof:AbstractControl;
   public name:AbstractControl;
   public sid:AbstractControl;
-  public github_token:AbstractControl;
+  private github_username: string = "";
 
 
-  constructor(fb:FormBuilder, private router: Router, private authService: AuthService, private http: Http) {
+  constructor(fb:FormBuilder, private router: Router, private authService: AuthService, private http: Http,
+              private modalService: NgbModal) {
     this.form = fb.group({
       'is_prof': [false, Validators.compose([Validators.required])],
       'name': ['', Validators.compose([Validators.required, Validators.minLength(2)])],
       'sid': [''],
-      'github_token': [''],
     });
     this.is_prof = this.form.controls['is_prof'];
     this.name = this.form.controls['name'];
     this.sid = this.form.controls['sid'];
-    this.github_token = this.form.controls['github_token']
   }
 
   ngOnInit() {
     console.log('profile-add');
+    this.authService.githubUsernameEventEmitter.subscribe(
+      (data)=>{
+        this.github_username = data;
+      }
+    )
   }
 
+
   onSubmit(values){
-    console.log(values);
+    values['github_username'] = this.github_username;
+    this.authService.postProfile(values).subscribe(
+      (data)=>{
+        console.log(data);
+        this.router.navigate(['/dashboard'])
+      },
+      (err)=>{
+        console.log(err);
+      }
+    )
+  }
+
+  lgModalShow() {
+    const activeModal = this.modalService.open(ModalComponent, {size: 'lg'});
+    activeModal.componentInstance.modalHeader = 'Github Register';
   }
 
 }
