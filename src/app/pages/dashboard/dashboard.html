@@ -1,5 +1,20 @@
 <div class="row">
   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="col-md-6">
+      <ba-card title="File Uploader" baCardClass="with-scroll">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <input type="file" formControlName="file" (change)="uploadListener($event)">
+          <a target="_blank_" href="{{codeUrl}}" *ngIf="codeUrl">{{codeUrl}}</a>
+          <button class="btn btn-success" type="submit" [disabled]="!file">제출</button>
+        </form>
+      </ba-card>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
     <pie-chart></pie-chart>
   </div>
 </div>
