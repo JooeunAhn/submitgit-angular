@@ -236,9 +236,9 @@ export class CourseService {
     ).map((res: Response) => res.json());
   }
 
-  manualGrade(id: string) {
+  manualGrade(id: string, username: string) {
     return this.http.get(
-      `${this.config.BASE_URL}api/v1/manual/${id}/`,
+      `${this.config.BASE_URL}api/v1/manual/${id}/?username=${username}`,
       {
         headers: new Headers({
           'Content-Type': 'application/json',

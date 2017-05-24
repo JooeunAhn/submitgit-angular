@@ -97,7 +97,7 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   }
 
   manualGrade() {
-    this.courseService.manualGrade(this.id).subscribe(
+    this.courseService.manualGrade(this.id, this.profile.username).subscribe(
       data => {
         console.log(data);
       },
