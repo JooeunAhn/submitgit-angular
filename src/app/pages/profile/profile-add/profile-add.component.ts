@@ -1,26 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../../shared/services/auth.service";
 import {Http} from "@angular/http";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalComponent} from "./modal/modal.component";
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-profile-add',
   templateUrl: './profile-add.component.html',
   styleUrls: ['./profile-add.component.scss']
 })
-export class ProfileAddComponent implements OnInit {
+export class ProfileAddComponent implements OnInit, OnDestroy {
 
-  public form:FormGroup;
-  public is_prof:AbstractControl;
-  public name:AbstractControl;
-  public sid:AbstractControl;
-  private github_username: string = "";
+  public form: FormGroup;
+  public is_prof: AbstractControl;
+  public name: AbstractControl;
+  public sid: AbstractControl;
+  private github_username: string = '';
+  github: Subscription;
 
-
-  constructor(fb:FormBuilder, private router: Router, private authService: AuthService, private http: Http,
+  constructor(fb: FormBuilder, private router: Router, private authService: AuthService, private http: Http,
               private modalService: NgbModal) {
     this.form = fb.group({
       'is_prof': [false, Validators.compose([Validators.required])],
@@ -33,12 +34,11 @@ export class ProfileAddComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('profile-add');
     this.authService.githubUsernameEventEmitter.subscribe(
       (data)=>{
         this.github_username = data;
       }
-    )
+    );
   }
 
 
@@ -60,4 +60,7 @@ export class ProfileAddComponent implements OnInit {
     activeModal.componentInstance.modalHeader = 'Github Register';
   }
 
+  ngOnDestroy() {
+    this.github.unsubscribe();
+  }
 }
