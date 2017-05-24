@@ -1,7 +1,7 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import {HttpModule, XSRFStrategy, CookieXSRFStrategy} from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -62,7 +62,7 @@ export const APPCONFIG:AppConfig = {
     AuthService,
     AuthGuard,
     ProfileGuard,
-    {provide:'APP_CONFIG', useValue:APPCONFIG}
+    {provide:'APP_CONFIG', useValue:APPCONFIG},
   ]
 })
 

@@ -21,8 +21,6 @@ export class ProfileAddComponent implements OnInit, OnDestroy {
   private github_username: string = '';
   github: Subscription;
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, private profileService: ProfileService) { }
-
   constructor(fb: FormBuilder, private router: Router, private authService: AuthService, private http: Http,
               private modalService: NgbModal) {
     this.form = fb.group({
@@ -36,33 +34,25 @@ export class ProfileAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.github = this.authService.githubUsernameEventEmitter.subscribe(
-      (data) => {
+    this.authService.githubUsernameEventEmitter.subscribe(
+      (data)=>{
         this.github_username = data;
       }
     );
   }
 
-  initForm() {
-    this.profileForm = new FormGroup({
-      'is_prof': new FormControl(false),
-      'name': new FormControl('', Validators.required),
-      'sid': new FormControl('', Validators.required),
-      'github_token': new FormControl('', Validators.required),
-    });
-  }
 
-  onSubmit(values) {
+  onSubmit(values){
     values['github_username'] = this.github_username;
     this.authService.postProfile(values).subscribe(
       (data)=>{
         console.log(data);
         this.router.navigate(['/dashboard'])
       },
-      err => {
+      (err)=>{
         console.log(err);
       }
-    );
+    )
   }
 
   lgModalShow() {

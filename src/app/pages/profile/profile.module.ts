@@ -13,7 +13,6 @@ import {NgaModule} from "../../theme/nga.module";
 import {NgbDropdownModule, NgbModalModule} from "@ng-bootstrap/ng-bootstrap";
 import { ModalComponent } from './profile-add/modal/modal.component';
 import {ProfileEditComponent} from './profile-edit/profile-edit.component';
-import {ProfileService} from './profile.service';
 
 @NgModule({
   imports: [
@@ -23,6 +22,11 @@ import {ProfileService} from './profile.service';
     FormsModule,
     NgaModule,
     routing,
+    ReactiveFormsModule,
+    FormsModule,
+    NgaModule,
+    NgbDropdownModule,
+    NgbModalModule,
   ],
   declarations: [
     ProfileAddComponent,
@@ -30,6 +34,9 @@ import {ProfileService} from './profile.service';
     ProfileComponent,
     ProfileEditComponent,
   ],
-  declarations: [ProfileAddComponent, ProfileViewComponent, ProfileComponent, ModalComponent]
+  entryComponents: [
+    ModalComponent,
+  ],
+  declarations: [ProfileAddComponent, ProfileViewComponent, ProfileEditComponent, ProfileComponent, ModalComponent]
 })
 export class ProfileModule { }
