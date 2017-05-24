@@ -7,7 +7,12 @@ import {routing} from './profile.routing';
 import { ProfileAddComponent } from './profile-add/profile-add.component';
 import { ProfileViewComponent } from './profile-view/profile-view.component';
 import { ProfileComponent } from './profile.component';
-import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import {routing} from "./profile.routing";
+import {ReactiveFormsModule, FormsModule} from "@angular/forms";
+import {NgaModule} from "../../theme/nga.module";
+import {NgbDropdownModule, NgbModalModule} from "@ng-bootstrap/ng-bootstrap";
+import { ModalComponent } from './profile-add/modal/modal.component';
+import {ProfileEditComponent} from './profile-edit/profile-edit.component';
 import {ProfileService} from './profile.service';
 
 @NgModule({
@@ -25,8 +30,6 @@ import {ProfileService} from './profile.service';
     ProfileComponent,
     ProfileEditComponent,
   ],
-  providers: [
-    ProfileService,
-  ]
+  declarations: [ProfileAddComponent, ProfileViewComponent, ProfileComponent, ModalComponent]
 })
 export class ProfileModule { }
