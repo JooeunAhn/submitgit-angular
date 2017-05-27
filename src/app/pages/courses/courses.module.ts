@@ -14,6 +14,8 @@ import { AssignmentsComponent } from './course/assignments/assignments.component
 import { AssignmentComponent } from './course/assignments/assignment/assignment.component';
 import { AssignmentAddComponent } from './course/assignments/assignment-add/assignment-add.component';
 import { AssignmentEditComponent } from './course/assignments/assignment-edit/assignment-edit.component';
+import {ModalComponent} from './course/assignments/assignment/modal/modal.component';
+import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 
 export const SEMESTER = [
   { 'value' : 0, 'name' : '1학기' },
@@ -48,6 +50,7 @@ export const LANG_CHOICES = [
     ReactiveFormsModule,
     FormsModule,
     NgaModule,
+    NgbModalModule,
     Ng2DatetimePickerModule,
     routing,
   ],
@@ -60,6 +63,10 @@ export const LANG_CHOICES = [
     AssignmentComponent,
     AssignmentAddComponent,
     AssignmentEditComponent,
+    ModalComponent,
+  ],
+  entryComponents: [
+    ModalComponent,
   ],
   providers: [
     CourseService,

@@ -5,6 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Assignment} from '../assignment.model';
 import {Course} from '../../../course.model';
 import {Subscription} from 'rxjs/Subscription';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalComponent} from './modal/modal.component';
 
 @Component({
   selector: 'app-assignment',
@@ -20,7 +22,13 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   courseid: string;
   asch: Subscription;
 
-  constructor(private authService: AuthService, private courseService: CourseService, private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private courseService: CourseService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalService: NgbModal,
+  ) {
     this.asch = this.courseService.assignmentChanged.subscribe(data => this.updateAssignment(data));
   }
 
@@ -92,18 +100,26 @@ export class AssignmentComponent implements OnInit, OnDestroy {
     this.assignment = assignment;
   }
 
-  ngOnDestroy() {
-    this.asch.unsubscribe();
-  }
-
   manualGrade() {
     this.courseService.manualGrade(this.id, this.profile.username).subscribe(
       data => {
-        console.log(data);
+        const _assignment: Assignment = data;
+        this.courseService.assignmentChanged.emit(_assignment);
       },
       err => {
         console.log(err);
       }
     );
+  }
+
+  lgModalShow(student) {
+    const activeModal = this.modalService.open(ModalComponent, {size: 'sm'});
+    activeModal.componentInstance.modalHeader = '';
+    activeModal.componentInstance.student_id = student;
+    activeModal.componentInstance.assignment = this.assignment.submission_set.filter(data => data.student == student);
+  }
+
+  ngOnDestroy() {
+    this.asch.unsubscribe();
   }
 }
