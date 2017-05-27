@@ -34,8 +34,8 @@ export class ProfileAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.authService.githubUsernameEventEmitter.subscribe(
-      (data)=>{
+    this.github = this.authService.githubUsernameEventEmitter.subscribe(
+      (data) => {
         this.github_username = data;
       }
     );
