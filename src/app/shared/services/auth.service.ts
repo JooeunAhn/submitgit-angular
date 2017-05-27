@@ -60,7 +60,17 @@ export class AuthService {
       {headers: new Headers({
         'Content-Type': "application/json",
         "Authorization": `Token ${localStorage.getItem('auth_token')}`
-      })}).map(res=>res.json());
+      })}).map(res => res.json());
   }
 
+  putProfile(data){
+    let body = JSON.stringify(data);
+    return this.http.put(
+      `${this.config.BASE_URL}api/v1/profile/me/`,
+      body,
+      {headers: new Headers({
+        'Content-Type': "application/json",
+        "Authorization": `Token ${localStorage.getItem('auth_token')}`
+      })}).map(res => res.json());
+  }
 }

@@ -24,8 +24,8 @@ export class ProfileService {
   updateProfile(formData): Observable<Response> {
     let fd = new FormData();
 
-    return this.http.post(
-      `${this.config.BASE_URL}api/v1/profile/`,
+    return this.http.put(
+      `${this.config.BASE_URL}api/v1/profile/me/`,
       JSON.stringify(formData),
       {
         headers: new Headers({

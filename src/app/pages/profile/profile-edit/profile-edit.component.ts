@@ -19,7 +19,7 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
   name: AbstractControl;
   sid: AbstractControl;
   profile;
-  fb: FormBuilder;
+  fb: FormBuilder = new FormBuilder();
   github_username;
   github: Subscription;
 
@@ -58,14 +58,14 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
 
   onSubmit(values) {
     values['github_username'] = this.github_username;
-    this.authService.postProfile(values).subscribe(
-      (data)=>{
-        this.router.navigate(['/dashboard'])
+    this.authService.putProfile(values).subscribe(
+      (data) => {
+        this.router.navigate(['/dashboard']);
       },
-      (err)=>{
+      (err) => {
         console.log(err);
       }
-    )
+    );
   }
 
   lgModalShow() {

@@ -1,6 +1,6 @@
-<div class="auth-main">
+<div class="auth-main" *ngIf="form">
   <div class="auth-block">
-    <h1 >profile-add</h1>
+    <h1 >profile-edit</h1>
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
       <div class="form-group row" [ngClass]="{'has-error': (!is_prof.valid && is_prof.touched), 'has-success': (is_prof.valid && is_prof.touched)}">
         <label for="inputEmail3" class="col-sm-2 control-label">is_prof</label>
