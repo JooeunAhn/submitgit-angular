@@ -1,6 +1,7 @@
 export class Assignment {
   constructor(
     public id: number = null,
+    public course: any = null,
     public professor: any = null,
     public title: string = null,
     public content: string = null,

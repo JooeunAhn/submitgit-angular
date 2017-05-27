@@ -40,26 +40,6 @@ export class Pages implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.courseService.getAssignments().subscribe(
-      data => {
-        data.forEach(item => {
-          let child = {
-            path: item.id,
-            data: {
-              menu: {
-                title: item.title,
-              }
-            }
-          };
-          PAGES_MENU['0']['children']['2']['children'].push(child);
-        });
-        this._menuService._menuChanged.emit(<Routes>PAGES_MENU);
-      },
-      err => {
-        console.log(err);
-      }
-    );
-
     this.courseService.getMyCourses().subscribe(
       data => {
         data.forEach(item => {
@@ -72,6 +52,26 @@ export class Pages implements OnInit, OnDestroy {
             }
           };
           PAGES_MENU['0']['children']['1']['children'].push(child);
+        });
+        this._menuService._menuChanged.emit(<Routes>PAGES_MENU);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.courseService.getAssignments().subscribe(
+      data => {
+        data.forEach(item => {
+          let child = {
+            path: ['courses', item.course, 'assignments', item.id],
+            data: {
+              menu: {
+                title: item.title,
+              }
+            }
+          };
+          PAGES_MENU['0']['children']['2']['children'].push(child);
         });
         this._menuService._menuChanged.emit(<Routes>PAGES_MENU);
       },
