@@ -11,10 +11,41 @@
     <a [routerLink]="['assignments', assignment.id]">{{ assignment.title }}</a>
   </div>
 </div>
-<div class="row" *ngIf="course && profile">
-  <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course.professor.profile.username == profile.username">수정하기</button>
-  <button class="btn btn-danger" (click)="onDelete()" *ngIf="course.professor.profile.username == profile.username">삭제하기</button>
-  <button class="btn btn-outline-secondary" [routerLink]="['assignments', 'add']" *ngIf="course.professor.profile.username == profile.username">과제생성</button>
+<div class="row">
+  <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course?.professor.profile.username == profile?.username">수정하기</button>
+  <button class="btn btn-danger" (click)="onDelete()" *ngIf="course?.professor.profile.username == profile?.username">삭제하기</button>
+  <button class="btn btn-outline-secondary" [routerLink]="['assignments', 'add']" *ngIf="course?.professor.profile.username == profile?.username">과제생성</button>
+  <button class="btn btn-outline-secondary" (click)="showRegister()" *ngIf="course?.professor.profile.username !== profile?.username">신청하기</button>
+  <div class="row">
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" *ngIf="registerForm">
+
+      <!--url-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="url">url</label>
+            <input
+              type="text"
+              id="url"
+              formControlName="url"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <!--submit&cancel-->
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!courseForm.valid">Save</button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
 </div>
 
 

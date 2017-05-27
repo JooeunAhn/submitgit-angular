@@ -30,6 +30,17 @@ export class CourseService {
       .map((res: Response) => <Course[]>res.json());
   }
 
+  getMyCourses(): Observable<Course[]> {
+    return this.http.get(`${this.config.BASE_URL}api/v1/course/me/`,
+      {
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        })
+      })
+      .map((res: Response) => <Course[]>res.json());
+  }
+
   getCourse(id: string): Observable<Course> {
     return this.http.get(
       `${this.config.BASE_URL}api/v1/course/` + id + `/`,
@@ -137,7 +148,6 @@ export class CourseService {
   // }
 
 
-  // TODO body에 append할것들 추가
   addAssignment(fd, attachments, courseid) {
     let body = new FormData();
     let test_langids = '';
@@ -245,5 +255,23 @@ export class CourseService {
         })
       }
     ).map((res: Response) => res.json());
+  }
+
+  addRepo(fd, courseid: string) {
+    let body = new FormData();
+
+    body.append('is_verified', 'false');
+    body.append('course', courseid);
+    body.append('url', fd.url);
+
+    return this.http.post(
+      `${this.config.BASE_URL}api/v1/repo/course/?course_id=${courseid}`,
+      body,
+      {
+        headers: new Headers({
+          'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        })
+      },
+    )
   }
 }

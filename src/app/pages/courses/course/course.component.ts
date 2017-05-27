@@ -4,6 +4,7 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Params, Router} from '@angular/r
 import {AuthService} from '../../../shared/services/auth.service';
 import {Course} from '../course.model';
 import {Subscription} from 'rxjs/Subscription';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-course',
@@ -16,6 +17,8 @@ export class CourseComponent implements OnInit, OnDestroy {
   profile;
   id: string;
   asch: Subscription;
+  isRegister: boolean = false;
+  registerForm: FormGroup;
   // isOwner: boolean = false;
 
   constructor(
@@ -28,6 +31,10 @@ export class CourseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.registerForm = new FormGroup({
+      'url': new FormControl('', Validators.required),
+    });
+
     // course data subscribe
     this.route.params.subscribe(
       (params: Params) => {
@@ -84,6 +91,21 @@ export class CourseComponent implements OnInit, OnDestroy {
 
   updateCourse(course) {
     this.course = course;
+  }
+
+  onRegister() {
+    this.courseService.addRepo(this.registerForm.value, this.id).subscribe(
+      data => {
+        this.router.navigate(['../'], {relativeTo: this.route});
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  showRegister() {
+    this.isRegister = true;
   }
 
   ngOnDestroy() {
