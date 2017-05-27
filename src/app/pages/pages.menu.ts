@@ -1,4 +1,4 @@
-export const PAGES_MENU = [
+export let PAGES_MENU = [
   {
     path: 'pages',
     children: [
@@ -26,14 +26,7 @@ export const PAGES_MENU = [
           }
         },
         children: [
-          {
-            path: '1',
-            data: {
-              menu: {
-                title: 'course 1',
-              }
-            }
-          }
+
         ]
       },
 
@@ -59,6 +52,20 @@ export const PAGES_MENU = [
           }
         ]
       },
+
+      {
+        path: ['profile', 'edit'],
+        data: {
+          menu: {
+            title: 'Profile',
+            icon: 'ion-document',
+            selected: false,
+            expanded: false,
+            order: 3
+          }
+        }
+      },
+
     ]
   }
 ];

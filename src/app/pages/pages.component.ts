@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Routes } from '@angular/router';
 
 import { BaMenuService } from '../theme';
 import { PAGES_MENU } from './pages.menu';
+import {CourseService} from './courses/course.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'pages',
@@ -29,12 +31,58 @@ import { PAGES_MENU } from './pages.menu';
     <ba-back-top position="200"></ba-back-top>
     `
 })
-export class Pages {
+export class Pages implements OnInit, OnDestroy {
 
-  constructor(private _menuService: BaMenuService,) {
+  _menuChanged: Subscription;
+
+  constructor(private _menuService: BaMenuService, private courseService: CourseService) {
+    this._menuChanged = this._menuService._menuChanged.subscribe(data => this._menuService.updateMenuByRoutes(<Routes>data));
   }
 
   ngOnInit() {
-    this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+    this.courseService.getAssignments().subscribe(
+      data => {
+        data.forEach(item => {
+          let child = {
+            path: item.id,
+            data: {
+              menu: {
+                title: item.title,
+              }
+            }
+          };
+          PAGES_MENU['0']['children']['2']['children'].push(child);
+        });
+        this._menuService._menuChanged.emit(<Routes>PAGES_MENU);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.courseService.getMyCourses().subscribe(
+      data => {
+        data.forEach(item => {
+          let child = {
+            path: item.id,
+            data: {
+              menu: {
+                title: item.title,
+              }
+            }
+          };
+          PAGES_MENU['0']['children']['1']['children'].push(child);
+        });
+        this._menuService._menuChanged.emit(<Routes>PAGES_MENU);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+  }
+
+  ngOnDestroy() {
+    this._menuChanged.unsubscribe();
   }
 }

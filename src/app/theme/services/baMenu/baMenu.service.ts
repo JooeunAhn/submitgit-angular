@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {Router, Routes} from '@angular/router';
 import * as _ from 'lodash';
 
@@ -9,8 +9,11 @@ export class BaMenuService {
   menuItems = new BehaviorSubject<any[]>([]);
 
   protected _currentMenuItem = {};
+  public _menuChanged: EventEmitter<Routes>;
 
-  constructor(private _router:Router) { }
+  constructor(private _router: Router) {
+    this._menuChanged = new EventEmitter<Routes>();
+  }
 
   /**
    * Updates the routes in the menu
