@@ -272,6 +272,24 @@ export class CourseService {
           'Authorization': `Token ${localStorage.getItem('auth_token')}`
         })
       },
-    )
+    );
+  }
+
+  updateRepo(repoid: string, courseid: string, url: string) {
+    let body = new FormData();
+    body.append('is_verified', 'true');
+    body.append('id', repoid);
+    body.append('course', courseid);
+    body.append('url', url);
+
+    return this.http.put(
+      `${this.config.BASE_URL}api/v1/repo/${repoid}/`,
+      body,
+      {
+        headers: new Headers({
+          'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        })
+      },
+    );
   }
 }

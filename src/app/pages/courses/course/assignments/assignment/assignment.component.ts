@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../../../../shared/services/auth.service';
 import {CourseService} from '../../../course.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -21,6 +21,11 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   course;
   courseid: string;
   asch: Subscription;
+  manual: boolean = false;
+  @Output() output = new EventEmitter<any>();
+  get_profile_b: boolean = false;
+  get_course_b: boolean = false;
+  is_owner: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -56,6 +61,8 @@ export class AssignmentComponent implements OnInit, OnDestroy {
         this.courseService.getCourse(this.courseid).subscribe(
           course => {
             this.course = course;
+            this.get_course_b = true;
+            this.output.emit(this.verifyOwner());
           }
         );
       },
@@ -67,11 +74,46 @@ export class AssignmentComponent implements OnInit, OnDestroy {
     this.authService.getProfile().subscribe(
       data => {
         this.profile = data;
+        this.get_profile_b = true;
+        this.output.emit(this.verifyOwner());
       },
       err => {
         console.log(err);
       }
     );
+  }
+
+  verifyOwner() {
+    if (this.get_course_b && this.get_profile_b) {
+      if (this.profile.username == this.course.professor.profile.username) {
+        console.log('user is owner of this course');
+        this.is_owner = true;
+      }
+    }
+  }
+
+  updateCourse(course) {
+    this.course = course;
+  }
+
+  verifyStudent(id) {
+    if (confirm('승인하시겠습니까?')) {
+      this.courseService.updateRepo(id, this.courseid, this.course.repository_set.filter(obj => obj.id == id)[0].url).subscribe(
+        data => {
+          this.courseService.getCourse(this.courseid).subscribe(
+            course => {
+              this.output.emit(this.updateCourse(course));
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   onDelete() {
@@ -101,10 +143,12 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   }
 
   manualGrade() {
+    this.manual = true;
     this.courseService.manualGrade(this.id, this.profile.username).subscribe(
       data => {
         const _assignment: Assignment = data;
         this.courseService.assignmentChanged.emit(_assignment);
+        this.manual = false;
       },
       err => {
         console.log(err);
@@ -117,6 +161,29 @@ export class AssignmentComponent implements OnInit, OnDestroy {
     activeModal.componentInstance.modalHeader = '';
     activeModal.componentInstance.student_id = student;
     activeModal.componentInstance.assignment = this.assignment.submission_set.filter(data => data.student == student);
+  }
+
+  onDownloadCode() {
+    // let zip = new JSZip();
+    // let count = 0;
+    // const zipFilename = "zipFilename.zip";
+    // let urls = [];
+    //
+    // urls.forEach(function(url){
+    //   let filename = "filename";
+    //   // loading a file and add it in a zip file
+    //   JSZipUtils.getBinaryContent(url, function (err, data) {
+    //     if (err) {
+    //       throw err; // or handle the error
+    //     }
+    //     zip.file(filename, data, {binary:true});
+    //     count++;
+    //     if (count == urls.length) {
+    //       let zipFile = zip.generate({type: "blob"});
+    //       saveAs(zipFile, zipFilename);
+    //     }
+    //   });
+    // });
   }
 
   ngOnDestroy() {

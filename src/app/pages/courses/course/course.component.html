@@ -1,25 +1,26 @@
 
 
-<div class="row" *ngIf="course && profile">
+<div class="row" *ngIf="course && profile" class="col-xs-12">
   {{ course.title }}<br>
   {{ course.content }}<br>
   {{ course.professor.profile.name }}<br>
   {{ course.year }}<br>
   {{ course.semester }}<br>
   {{ course.attachments }}<br>
+  과제<br>
   <div *ngFor="let assignment of course.assignment_set">
     <a [routerLink]="['assignments', assignment.id]">{{ assignment.title }}</a>
   </div>
 </div>
 <div class="row">
-  <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course?.professor.profile.username == profile?.username">수정하기</button>
-  <button class="btn btn-danger" (click)="onDelete()" *ngIf="course?.professor.profile.username == profile?.username">삭제하기</button>
+  <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course?.professor.profile.username == profile?.username">강좌 수정하기</button>
+  <button class="btn btn-danger" (click)="onDelete()" *ngIf="course?.professor.profile.username == profile?.username">강좌 삭제하기</button>
   <button class="btn btn-outline-secondary" [routerLink]="['assignments', 'add']" *ngIf="course?.professor.profile.username == profile?.username">과제생성</button>
   <button class="btn btn-outline-secondary" (click)="showRegister()" *ngIf="course?.professor.profile.username !== profile?.username">신청하기</button>
 </div>
 
 <div class="row">
-  <form [formGroup]="registerForm" (ngSubmit)="onRegister()" *ngIf="registerForm && isRegister">
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()" *ngIf="registerForm && isRegister" class="col-xs-12">
 
     <!--url-->
     <div class="row">

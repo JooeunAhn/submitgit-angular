@@ -7,8 +7,16 @@
 </div>
 
 <div class="row" *ngIf="profile?.username == course?.professor.profile.username">
-  <div *ngFor="let item of assignment?.submission_set">
+  <div *ngFor="let item of assignment?.submission_set" class="col-xs-12">
     student id : <button type="button" class="btn btn-outline-success" (click)="lgModalShow(item.student)">CHECK</button>
+  </div>
+</div>
+
+<div class="row" *ngIf="is_owner">
+  <div *ngFor="let item of course?.repository_set" class="col-xs-12">
+    <button type="button" class="btn btn-success" *ngIf="!item.is_verified" (click)="verifyStudent(item.id)">
+      {{ item.student.profile.username }} 승인하기
+    </button>
   </div>
 </div>
 
@@ -16,18 +24,25 @@
   class="btn btn-outline-info"
   [routerLink]="['edit']"
   *ngIf="profile?.username == course?.professor.profile.username">
-  수정하기
+  과제 수정하기
 </button>
 <button
   class="btn btn-outline-danger"
   (click)="onDelete()"
   *ngIf="profile?.username == course?.professor.profile.username">
-  삭제하기
+  과제 삭제하기
+</button>
+<button
+  class="btn btn-outline-danger"
+  (click)="onDownloadCode()"
+  *ngIf="profile?.username == course?.professor.profile.username">
+  학생들 과제 다운받기(압축파일)
 </button>
 <button
   class="btn btn-outline-warning"
   (click)="manualGrade()"
-  *ngIf="!profile?.is_prof">
+  *ngIf="!profile?.is_prof"
+  [disabled]="manual">
   바로 채점하기
 </button>
 
