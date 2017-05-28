@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, OnDestroy, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../../../../shared/services/auth.service';
 import {CourseService} from '../../../course.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -7,6 +7,7 @@ import {Course} from '../../../course.model';
 import {Subscription} from 'rxjs/Subscription';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModalComponent} from './modal/modal.component';
+import {AppConfig} from '../../../../../app.config';
 
 @Component({
   selector: 'app-assignment',
@@ -26,6 +27,7 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   get_profile_b: boolean = false;
   get_course_b: boolean = false;
   is_owner: boolean = false;
+  onDownload: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -33,6 +35,7 @@ export class AssignmentComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
+    @Inject('APP_CONFIG') private config: AppConfig,
   ) {
     this.asch = this.courseService.assignmentChanged.subscribe(data => this.updateAssignment(data));
   }
@@ -164,26 +167,8 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   }
 
   onDownloadCode() {
-    // let zip = new JSZip();
-    // let count = 0;
-    // const zipFilename = "zipFilename.zip";
-    // let urls = [];
-    //
-    // urls.forEach(function(url){
-    //   let filename = "filename";
-    //   // loading a file and add it in a zip file
-    //   JSZipUtils.getBinaryContent(url, function (err, data) {
-    //     if (err) {
-    //       throw err; // or handle the error
-    //     }
-    //     zip.file(filename, data, {binary:true});
-    //     count++;
-    //     if (count == urls.length) {
-    //       let zipFile = zip.generate({type: "blob"});
-    //       saveAs(zipFile, zipFilename);
-    //     }
-    //   });
-    // });
+    this.onDownload = true;
+    window.open(`${this.config.BASE_URL}download_zip/${this.id}`);
   }
 
   ngOnDestroy() {

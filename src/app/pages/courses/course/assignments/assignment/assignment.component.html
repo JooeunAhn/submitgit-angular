@@ -35,7 +35,8 @@
 <button
   class="btn btn-outline-danger"
   (click)="onDownloadCode()"
-  *ngIf="profile?.username == course?.professor.profile.username">
+  *ngIf="profile?.username == course?.professor.profile.username"
+  [disabled]="onDownload">
   학생들 과제 다운받기(압축파일)
 </button>
 <button
