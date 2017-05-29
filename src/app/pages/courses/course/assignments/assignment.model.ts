@@ -6,6 +6,7 @@ export class Assignment {
     public title: string = null,
     public content: string = null,
     public is_test: string = null,
+    public is_passed: string = null,
     public deadline: string = null,
     public attachments: any = null,
     public test_langids: any = null,

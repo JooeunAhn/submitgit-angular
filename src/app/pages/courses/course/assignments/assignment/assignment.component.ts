@@ -89,7 +89,6 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   verifyOwner() {
     if (this.get_course_b && this.get_profile_b) {
       if (this.profile.username == this.course.professor.profile.username) {
-        console.log('user is owner of this course');
         this.is_owner = true;
       }
     }
@@ -169,6 +168,10 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   onDownloadCode() {
     this.onDownload = true;
     window.open(`${this.config.BASE_URL}download_zip/${this.id}`);
+  }
+
+  downloadAttachment() {
+    window.open(this.course.attachments);
   }
 
   ngOnDestroy() {

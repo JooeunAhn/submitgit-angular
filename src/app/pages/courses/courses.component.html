@@ -8,13 +8,31 @@
 </div>
 
 
-<div class="row">
-  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-    <div *ngFor="let item of course">
-      <a [routerLink]="[item.id]">{{ item.title }}</a>
-    </div>
+
+<div class="row" class="col-xs-12">
+  <div class="container">
+    <h2>Courses</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            Professor
+          </th>
+          <th>
+            Course title
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of course" [routerLink]="[item.id]">
+          <td>{{ item.professor.profile.name }}</td>
+          <td>{{ item.title }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
+
 
 <div class="row" *ngIf="profile">
   <button class="btn btn-success" [routerLink]="['add']" *ngIf="profile.is_prof">과제 추가하기</button>

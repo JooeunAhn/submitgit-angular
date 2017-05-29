@@ -108,6 +108,10 @@ export class CourseComponent implements OnInit, OnDestroy {
     this.isRegister = true;
   }
 
+  downloadAttachment() {
+    window.open(this.course.attachments);
+  }
+
   ngOnDestroy() {
     this.asch.unsubscribe();
   }

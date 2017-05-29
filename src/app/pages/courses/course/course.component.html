@@ -1,22 +1,57 @@
 
-
-<div class="row" *ngIf="course && profile" class="col-xs-12">
-  {{ course.title }}<br>
-  {{ course.content }}<br>
-  {{ course.professor.profile.name }}<br>
-  {{ course.year }}<br>
-  {{ course.semester }}<br>
-  {{ course.attachments }}<br>
-  과제<br>
-  <div *ngFor="let assignment of course.assignment_set">
-    <a [routerLink]="['assignments', assignment.id]">{{ assignment.title }}</a>
+<div class="row" class="col-xs-12">
+  <div class="container">
+    <h2>Course Details of {{ course?.title }}</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            Category
+          </th>
+          <th>
+            Detail
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Title</td>
+          <td>{{ course?.title }}</td>
+        </tr>
+        <tr>
+          <td>Content</td>
+          <td>{{ course?.content }}</td>
+        </tr>
+        <tr>
+          <td>Professor</td>
+          <td>{{ course?.professor.profile.name }}</td>
+        </tr>
+        <tr>
+          <td>Year</td>
+          <td>{{ course?.year }}</td>
+        </tr>
+        <tr>
+          <td>Semester</td>
+          <td>{{ course?.semester }}</td>
+        </tr>
+        <tr *ngIf="course?.attachments" (click)="downloadAttachment()">
+          <td>Attachments</td>
+          <td>{{ course?.attachments.split('/').pop() }}</td>
+        </tr>
+        <tr *ngFor="let assignment of course?.assignment_set" [routerLink]="['assignments', assignment.id]">
+          <td>Assignment</td>
+          <td>{{ assignment.title }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
+
 <div class="row">
   <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course?.professor.profile.username == profile?.username">강좌 수정하기</button>
   <button class="btn btn-danger" (click)="onDelete()" *ngIf="course?.professor.profile.username == profile?.username">강좌 삭제하기</button>
-  <button class="btn btn-outline-secondary" [routerLink]="['assignments', 'add']" *ngIf="course?.professor.profile.username == profile?.username">과제생성</button>
-  <button class="btn btn-outline-secondary" (click)="showRegister()" *ngIf="course?.professor.profile.username !== profile?.username">신청하기</button>
+  <button class="btn btn-secondary" [routerLink]="['assignments', 'add']" *ngIf="course?.professor.profile.username == profile?.username">과제생성</button>
+  <button class="btn btn-secondary" (click)="showRegister()" *ngIf="course?.professor.profile.username !== profile?.username && !profile?.is_prof">신청하기</button>
 </div>
 
 <div class="row">

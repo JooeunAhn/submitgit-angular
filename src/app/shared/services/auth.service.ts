@@ -43,7 +43,7 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  getProfile(): Observable<Response>{
+  getProfile(): Observable<any>{
     return this.http.get(
       `${this.config.BASE_URL}api/v1/profile/me/`,
       {headers: new Headers({

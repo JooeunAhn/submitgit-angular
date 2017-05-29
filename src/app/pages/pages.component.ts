@@ -5,6 +5,7 @@ import { BaMenuService } from '../theme';
 import { PAGES_MENU } from './pages.menu';
 import {CourseService} from './courses/course.service';
 import {Subscription} from 'rxjs/Subscription';
+import {AuthService} from '../shared/services/auth.service';
 
 @Component({
   selector: 'pages',
@@ -35,7 +36,7 @@ export class Pages implements OnInit, OnDestroy {
 
   _menuChanged: Subscription;
 
-  constructor(private _menuService: BaMenuService, private courseService: CourseService) {
+  constructor(private _menuService: BaMenuService, private courseService: CourseService, private authService: AuthService) {
     this._menuChanged = this._menuService._menuChanged.subscribe(data => this._menuService.updateMenuByRoutes(<Routes>data));
   }
 
@@ -60,23 +61,30 @@ export class Pages implements OnInit, OnDestroy {
       }
     );
 
-    this.courseService.getAssignments().subscribe(
+    this.authService.getProfile().subscribe(
       data => {
-        data.forEach(item => {
-          let child = {
-            path: ['courses', item.course, 'assignments', item.id],
-            data: {
-              menu: {
-                title: item.title,
-              }
+        const profile = data;
+        if (!profile.is_prof) {
+          this.courseService.getAssignments().subscribe(
+            data => {
+              data.forEach(item => {
+                let child = {
+                  path: ['courses', item.course, 'assignments', item.id],
+                  data: {
+                    menu: {
+                      title: item.title,
+                    }
+                  }
+                };
+                PAGES_MENU['0']['children']['2']['children'].push(child);
+              });
+              this._menuService._menuChanged.emit(<Routes>PAGES_MENU);
+            },
+            err => {
+              console.log(err);
             }
-          };
-          PAGES_MENU['0']['children']['2']['children'].push(child);
-        });
-        this._menuService._menuChanged.emit(<Routes>PAGES_MENU);
-      },
-      err => {
-        console.log(err);
+          );
+        }
       }
     );
 

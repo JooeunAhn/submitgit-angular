@@ -42,14 +42,6 @@ export let PAGES_MENU = [
           }
         },
         children: [
-          {
-            path: '1',
-            data: {
-              menu: {
-                title: 'assignment 1',
-              }
-            }
-          }
         ]
       },
 

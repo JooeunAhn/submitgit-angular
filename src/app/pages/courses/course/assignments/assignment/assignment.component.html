@@ -1,46 +1,108 @@
-<div class="row">
-  {{ assignment?.title }}<br>
-</div>
 
-<div class="row">
-  {{ assignment?.deadline }}<br>
-</div>
-
-<div class="row" *ngIf="profile?.username == course?.professor.profile.username">
-  <div *ngFor="let item of assignment?.submission_set" class="col-xs-12">
-    student id : <button type="button" class="btn btn-outline-success" (click)="lgModalShow(item.student)">CHECK</button>
+<div class="row" class="col-xs-12">
+  <div class="container">
+    <h2>Assignment Detail of {{ assignment?.title }}</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            Category
+          </th>
+          <th>
+            Detail
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Title</td>
+          <td>{{ assignment?.title }}</td>
+        </tr>
+        <tr>
+          <td>Content</td>
+          <td>{{ assignment?.content }}</td>
+        </tr>
+        <tr>
+          <td>Deadline</td>
+          <td>{{ assignment?.deadline }}</td>
+        </tr>
+        <tr *ngIf="assignment?.attachments" (click)="downloadAttachment()">
+          <td>Attachments</td>
+          <td>{{ assignment?.attachments }}</td>
+        </tr>
+        <tr *ngIf="assignment?.test_file_name">
+          <td>File Name</td>
+          <td>{{ assignment?.test_file_name }}</td>
+        </tr>
+        <tr *ngIf="assignment?.test_file_name && !profile?.is_prof">
+          <td>Tested</td>
+          <td>{{ assignment?.is_test }}</td>
+        </tr>
+        <tr *ngIf="assignment?.test_file_name && !profile?.is_prof">
+          <td>Passed</td>
+          <td>{{ assignment?.is_passed }}</td>
+        </tr>
+        <tr *ngIf="assignment?.test_file_name">
+          <td>Allowed Languages</td>
+          <td>{{ assignment?.test_langids.split(',') }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
+
 <div class="row" *ngIf="is_owner">
-  <div *ngFor="let item of course?.repository_set" class="col-xs-12">
-    <button type="button" class="btn btn-success" *ngIf="!item.is_verified" (click)="verifyStudent(item.id)">
-      {{ item.student.profile.username }} 승인하기
-    </button>
+  <div class="container">
+    <div *ngFor="let item of course?.repository_set" class="col-xs-12">
+      <button type="button" class="btn btn-success" *ngIf="!item.is_verified" (click)="verifyStudent(item.id)">
+        {{ item.student.profile.sid }} {{ item.student.profile.name }} 승인하기
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="profile?.username == course?.professor.profile.username">
+  <div class="container">
+    <h2>학생들 결과 조회</h2>
+    <table class="table table-striped">
+      <thead>
+        <th>Student</th>
+        <th>Submission</th>
+        <th>Check Detail</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of assignment?.submission_set">
+          <td>{{ item.student.profile.sid }} {{ item.student.profile.name }}</td>
+          <td>{{ item.is_passed ? 'Passed' : item.is_test ? 'Not submitted' : 'Failed' }}</td>
+          <td><button type="button" class="btn btn-success" (click)="lgModalShow(item.student)">확인하기</button></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <button
-  class="btn btn-outline-info"
+  class="btn btn-info"
   [routerLink]="['edit']"
   *ngIf="profile?.username == course?.professor.profile.username">
   과제 수정하기
 </button>
 <button
-  class="btn btn-outline-danger"
+  class="btn btn-danger"
   (click)="onDelete()"
   *ngIf="profile?.username == course?.professor.profile.username">
   과제 삭제하기
 </button>
 <button
-  class="btn btn-outline-danger"
+  class="btn btn-success"
   (click)="onDownloadCode()"
   *ngIf="profile?.username == course?.professor.profile.username"
   [disabled]="onDownload">
   학생들 과제 다운받기(압축파일)
 </button>
 <button
-  class="btn btn-outline-warning"
+  class="btn btn-warning"
   (click)="manualGrade()"
   *ngIf="!profile?.is_prof"
   [disabled]="manual">

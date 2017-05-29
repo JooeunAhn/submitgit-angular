@@ -43,7 +43,7 @@ export class CourseService {
 
   getCourse(id: string): Observable<Course> {
     return this.http.get(
-      `${this.config.BASE_URL}api/v1/course/` + id + `/`,
+      `${this.config.BASE_URL}api/v1/course/${id}/`,
       {
         headers: new Headers({
           'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ export class CourseService {
     body.append('semester', fd.semester);
 
     return this.http.put(
-      `${this.config.BASE_URL}api/v1/course/` + id + `/`,
+      `${this.config.BASE_URL}api/v1/course/${id}/`,
       body,
       {
         headers: new Headers({
@@ -101,7 +101,7 @@ export class CourseService {
 
   deleteCourse(id: string) {
     return this.http.delete(
-      `${this.config.BASE_URL}api/v1/course/` + id + `/`,
+      `${this.config.BASE_URL}api/v1/course/${id}/`,
       {
         headers: new Headers({
           'Authorization': `Token ${localStorage.getItem('auth_token')}`
@@ -124,7 +124,7 @@ export class CourseService {
 
   getAssignment(id: string): Observable<Assignment> {
     return this.http.get(
-      `${this.config.BASE_URL}api/v1/assignment/` + id + `/`,
+      `${this.config.BASE_URL}api/v1/assignment/${id}/`,
       {
         headers: new Headers({
           'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ export class CourseService {
 
   deleteAssignment(id: string) {
     return this.http.delete(
-      `${this.config.BASE_URL}api/v1/assignment/` + id + `/`,
+      `${this.config.BASE_URL}api/v1/assignment/${id}/`,
       {
         headers: new Headers({
           'Authorization': `Token ${localStorage.getItem('auth_token')}`
@@ -223,7 +223,7 @@ export class CourseService {
     }
 
     return this.http.put(
-      `${this.config.BASE_URL}api/v1/assignment/` + id + `/`,
+      `${this.config.BASE_URL}api/v1/assignment/${id}/`,
       body,
       {
         headers: new Headers({
