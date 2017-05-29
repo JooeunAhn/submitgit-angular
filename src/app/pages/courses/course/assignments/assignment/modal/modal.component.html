@@ -1,17 +1,19 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h4 class="modal-title">{{modalHeader}}</h4>
+    <h4 class="modal-title">Test Result of {{ assignment?.student?.profile.sid }} {{ assignment?.student?.profile.name }}</h4>
     <button class="close" aria-label="Close" (click)="closeModal()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    {{modalContent}}
-    <div>
-      <span>{{ assignment[0]?.errors }}</span>
+    <div (click)="downloadCode(assignment?.raw_code)">
+      {{ assignment?.raw_code.split('/').pop() }}
     </div>
-    <div *ngIf="errorMessage">
-      {{errorMessage}}
+    <div>
+      Result: {{ assignment?.is_passed ? 'Passed' : assignment?.is_test ? 'Not submitted' : 'Failed' }}
+    </div>
+    <div *ngIf="assignment?.has_error">
+      {{ assignment?.errors }}
     </div>
   </div>
   <div class="modal-footer">

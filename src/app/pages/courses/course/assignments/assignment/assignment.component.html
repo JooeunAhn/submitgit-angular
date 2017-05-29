@@ -75,7 +75,7 @@
         <tr *ngFor="let item of assignment?.submission_set">
           <td>{{ item.student.profile.sid }} {{ item.student.profile.name }}</td>
           <td>{{ item.is_passed ? 'Passed' : item.is_test ? 'Not submitted' : 'Failed' }}</td>
-          <td><button type="button" class="btn btn-success" (click)="lgModalShow(item.student)">확인하기</button></td>
+          <td><button type="button" class="btn btn-success" (click)="lgModalShow(item.student.profile.id)">확인하기</button></td>
         </tr>
       </tbody>
     </table>
@@ -104,7 +104,7 @@
 <button
   class="btn btn-warning"
   (click)="manualGrade()"
-  *ngIf="!profile?.is_prof"
+  *ngIf="assignment?.test_file_name && !profile?.is_prof"
   [disabled]="manual">
   바로 채점하기
 </button>

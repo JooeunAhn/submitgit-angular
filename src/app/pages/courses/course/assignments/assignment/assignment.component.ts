@@ -161,8 +161,7 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   lgModalShow(student) {
     const activeModal = this.modalService.open(ModalComponent, {size: 'sm'});
     activeModal.componentInstance.modalHeader = '';
-    activeModal.componentInstance.student_id = student;
-    activeModal.componentInstance.assignment = this.assignment.submission_set.filter(data => data.student == student);
+    activeModal.componentInstance.assignment = this.assignment.submission_set.filter(data => data.student.profile.id == student)[0];
   }
 
   onDownloadCode() {

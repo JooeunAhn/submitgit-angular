@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {Http} from '@angular/http';
+import {AuthService} from '../../../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-modal',
@@ -10,17 +11,19 @@ import {Http} from '@angular/http';
 export class ModalComponent implements OnInit {
 
   modalContent: string = ``;
-  student_id: string = ``;
   assignment: any = new Object();
-  private errorMessage: string = "";
 
-  constructor(private activeModal: NgbActiveModal, private http: Http) { }
+  constructor(private activeModal: NgbActiveModal, private http: Http, private authService: AuthService) { }
 
   ngOnInit() {
   }
 
   closeModal() {
     this.activeModal.close();
+  }
+
+  downloadCode(url) {
+    window.open(url);
   }
 
 }
