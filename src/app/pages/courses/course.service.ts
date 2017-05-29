@@ -257,6 +257,18 @@ export class CourseService {
     ).map((res: Response) => res.json());
   }
 
+  getRepo(id) {
+    return this.http.get(
+      `${this.config.BASE_URL}api/v1/repo/course/?course_id=${id}`,
+      {
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        })
+      }
+    ).map((res: Response) => res.json());
+  }
+
   addRepo(fd, courseid: string) {
     let body = new FormData();
 
@@ -265,7 +277,7 @@ export class CourseService {
     body.append('url', fd.url);
 
     return this.http.post(
-      `${this.config.BASE_URL}api/v1/repo/course/?course_id=${courseid}`,
+      `${this.config.BASE_URL}api/v1/repo/`,
       body,
       {
         headers: new Headers({

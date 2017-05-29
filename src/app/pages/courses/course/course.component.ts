@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {CourseService} from '../course.service';
 import {ActivatedRoute, ActivatedRouteSnapshot, Params, Router} from '@angular/router';
 import {AuthService} from '../../../shared/services/auth.service';
@@ -13,12 +13,17 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class CourseComponent implements OnInit, OnDestroy {
 
-  course;
+  course: Course;
+  repo;
   profile;
   id: string;
   asch: Subscription;
   isRegister: boolean = false;
   registerForm: FormGroup;
+  alreadyRegistered: boolean = true;
+  @Output() output = new EventEmitter<any>();
+  get_repo_b: boolean = false;
+  get_course_b: boolean = false;
   // isOwner: boolean = false;
 
   constructor(
@@ -39,9 +44,23 @@ export class CourseComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(
       (params: Params) => {
         this.id = params['id'];
+
+        this.courseService.getRepo(this.id).subscribe(
+          data => {
+            this.repo = data;
+            this.get_repo_b = true;
+            this.output.emit(this.checkRegister());
+          },
+          err => {
+            console.log(err);
+          }
+        );
+
         this.courseService.getCourse(this.id).subscribe(
           (data) => {
             this.course = data;
+            this.get_course_b = true;
+            this.output.emit(this.checkRegister());
           },
           (err) => {
             console.log(err);
@@ -96,13 +115,26 @@ export class CourseComponent implements OnInit, OnDestroy {
   onRegister() {
     this.courseService.addRepo(this.registerForm.value, this.id).subscribe(
       data => {
-        this.router.navigate(['../'], {relativeTo: this.route});
+        // this.onCancel();
       },
       err => {
         console.log(err);
       }
     );
   }
+
+  onCancel() {
+
+  }
+
+  checkRegister() {
+    if (this.get_course_b && this.get_repo_b) {
+      if (this.repo == null) {
+        this.alreadyRegistered = false;
+      }
+    }
+  }
+
 
   showRegister() {
     this.isRegister = true;

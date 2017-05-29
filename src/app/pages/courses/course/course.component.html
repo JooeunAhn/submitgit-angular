@@ -51,7 +51,7 @@
   <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course?.professor.profile.username == profile?.username">강좌 수정하기</button>
   <button class="btn btn-danger" (click)="onDelete()" *ngIf="course?.professor.profile.username == profile?.username">강좌 삭제하기</button>
   <button class="btn btn-secondary" [routerLink]="['assignments', 'add']" *ngIf="course?.professor.profile.username == profile?.username">과제생성</button>
-  <button class="btn btn-secondary" (click)="showRegister()" *ngIf="course?.professor.profile.username !== profile?.username && !profile?.is_prof">신청하기</button>
+  <button class="btn btn-secondary" (click)="showRegister()" *ngIf="!alreadyRegistered">신청하기</button>
 </div>
 
 <div class="row">
@@ -76,8 +76,7 @@
       <div class="col-xs-12">
         <button
           type="submit"
-          class="btn btn-success"
-          [disabled]="!courseForm.valid">Save</button>
+          class="btn btn-success">Save</button>
         <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
       </div>
     </div>
