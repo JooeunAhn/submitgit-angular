@@ -18,7 +18,7 @@ export class CourseAddComponent implements OnInit {
   profile;
   courses;
 
-  constructor(@Inject('SEMESTER') private SEMESTER, private courseService: CourseService, private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(@Inject('SEMESTER') public SEMESTER, private courseService: CourseService, private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit() {
     this.initForm();

@@ -28,41 +28,26 @@
         </tr>
         <tr *ngIf="assignment?.attachments" (click)="downloadAttachment()">
           <td>Attachments</td>
-          <td>{{ assignment?.attachments }}</td>
+          <td>{{ assignment?.attachments.split('/').pop() }}</td>
         </tr>
         <tr *ngIf="assignment?.test_file_name">
           <td>File Name</td>
           <td>{{ assignment?.test_file_name }}</td>
         </tr>
         <tr *ngIf="assignment?.test_file_name && !profile?.is_prof">
-          <td>Tested</td>
-          <td>{{ assignment?.is_test }}</td>
-        </tr>
-        <tr *ngIf="assignment?.test_file_name && !profile?.is_prof">
           <td>Passed</td>
-          <td>{{ assignment?.is_passed }}</td>
+          <td>{{ assignment?.is_passed ? 'Passed' : assignment?.is_test ? 'Failed' : 'Not submitted' }}</td>
         </tr>
         <tr *ngIf="assignment?.test_file_name">
           <td>Allowed Languages</td>
-          <td>{{ assignment?.test_langids.split(',') }}</td>
+          <td><span *ngFor="let item of assignment?.test_langids.split(',')">{{ LANG_CHOICES[+item] ? LANG_CHOICES[+item]['name'] : '' }} </span></td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-
-<div class="row" *ngIf="is_owner">
-  <div class="container">
-    <div *ngFor="let item of course?.repository_set" class="col-xs-12">
-      <button type="button" class="btn btn-success" *ngIf="!item.is_verified" (click)="verifyStudent(item.id)">
-        {{ item.student.profile.sid }} {{ item.student.profile.name }} 승인하기
-      </button>
-    </div>
-  </div>
-</div>
-
-<div class="row" *ngIf="profile?.username == course?.professor.profile.username">
+<div class="row" *ngIf="course?.repository_set">
   <div class="container">
     <h2>학생들 결과 조회</h2>
     <table class="table table-striped">
@@ -72,9 +57,9 @@
         <th>Check Detail</th>
       </thead>
       <tbody>
-        <tr *ngFor="let item of assignment?.submission_set">
+        <tr *ngFor="let item of course?.repository_set">
           <td>{{ item.student.profile.sid }} {{ item.student.profile.name }}</td>
-          <td>{{ item.is_passed ? 'Passed' : item.is_test ? 'Not submitted' : 'Failed' }}</td>
+          <td>{{ isPassed(item) }}</td>
           <td><button type="button" class="btn btn-success" (click)="lgModalShow(item.student.profile.id)">확인하기</button></td>
         </tr>
       </tbody>
@@ -101,10 +86,19 @@
   [disabled]="onDownload">
   학생들 과제 다운받기(압축파일)
 </button>
+
+<ng-container *ngIf="!profile?.is_prof">
+<ba-card title="File Uploader" baCardClass="with-scroll">
+    <input type="file" (change)="uploadListener($event)">
+    <a target="_blank_" href="{{ codeUrl }}" *ngIf="codeUrl">{{ codeUrl }}</a>
+    <button class="btn btn-success" (click)="manualSubmit()" [disabled]="!file">암호화</button>
+</ba-card>
+</ng-container>
+
 <button
   class="btn btn-warning"
   (click)="manualGrade()"
-  *ngIf="assignment?.test_file_name && !profile?.is_prof"
+  *ngIf="!profile?.is_prof && assignment?.submission_set.length != 0"
   [disabled]="manual">
   바로 채점하기
 </button>

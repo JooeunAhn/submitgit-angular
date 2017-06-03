@@ -19,7 +19,7 @@ export class Register {
   public passwords:FormGroup;
 
   public submitted:boolean = false;
-  public signUpErrorMessages:Object = {
+  public signUpErrorMessages = {
     username: null,
     email: null,
     password1: null,

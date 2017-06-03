@@ -18,7 +18,7 @@ export let PAGES_MENU = [
         path: 'courses',
         data: {
           menu: {
-            title: 'Courses',
+            title: 'general.menu.courses',
             icon: 'ion-android-laptop',
             selected: false,
             expanded: false,
@@ -34,7 +34,7 @@ export let PAGES_MENU = [
         path: 'assignments',
         data: {
           menu: {
-            title: 'Assignments',
+            title: 'general.menu.assignments',
             icon: 'ion-document',
             selected: false,
             expanded: false,
@@ -49,7 +49,7 @@ export let PAGES_MENU = [
         path: ['profile', 'edit'],
         data: {
           menu: {
-            title: 'Profile',
+            title: 'general.menu.profile',
             icon: 'ion-document',
             selected: false,
             expanded: false,

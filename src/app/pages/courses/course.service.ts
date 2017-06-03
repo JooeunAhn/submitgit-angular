@@ -269,12 +269,12 @@ export class CourseService {
     ).map((res: Response) => res.json());
   }
 
-  addRepo(fd, courseid: string) {
+  addRepo(fd, courseid: string, github_username: string) {
     let body = new FormData();
 
     body.append('is_verified', 'false');
     body.append('course', courseid);
-    body.append('url', fd.url);
+    body.append('url', `https://github.com/${github_username}/${fd.url}/`);
 
     return this.http.post(
       `${this.config.BASE_URL}api/v1/repo/`,
@@ -303,5 +303,20 @@ export class CourseService {
         })
       },
     );
+  }
+
+  manualSubmit(id: string, file){
+    let url = `${this.config.BASE_URL}api/v1/encryptor/`;
+    let data = new FormData();
+    data.append('code', file);
+    data.append('assignment', id);
+    return this.http.post(
+      url,
+      data,
+      {
+        headers: new Headers({
+          "Authorization": `Token ${localStorage.getItem('auth_token')}`
+        })
+      }).map(res => res.json());
   }
 }

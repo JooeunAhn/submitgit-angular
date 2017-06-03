@@ -8,6 +8,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModalComponent} from './modal/modal.component';
 import {AppConfig} from '../../../../../app.config';
+import {LANG_CHOICES} from '../../../courses.module';
 
 @Component({
   selector: 'app-assignment',
@@ -24,10 +25,9 @@ export class AssignmentComponent implements OnInit, OnDestroy {
   asch: Subscription;
   manual: boolean = false;
   @Output() output = new EventEmitter<any>();
-  get_profile_b: boolean = false;
-  get_course_b: boolean = false;
-  is_owner: boolean = false;
   onDownload: boolean = false;
+  file;
+  codeUrl: string;
 
   constructor(
     private authService: AuthService,
@@ -36,6 +36,7 @@ export class AssignmentComponent implements OnInit, OnDestroy {
     private router: Router,
     private modalService: NgbModal,
     @Inject('APP_CONFIG') private config: AppConfig,
+    @Inject('LANG_CHOICES') private LANG_CHOICES,
   ) {
     this.asch = this.courseService.assignmentChanged.subscribe(data => this.updateAssignment(data));
   }
@@ -64,8 +65,6 @@ export class AssignmentComponent implements OnInit, OnDestroy {
         this.courseService.getCourse(this.courseid).subscribe(
           course => {
             this.course = course;
-            this.get_course_b = true;
-            this.output.emit(this.verifyOwner());
           }
         );
       },
@@ -77,8 +76,6 @@ export class AssignmentComponent implements OnInit, OnDestroy {
     this.authService.getProfile().subscribe(
       data => {
         this.profile = data;
-        this.get_profile_b = true;
-        this.output.emit(this.verifyOwner());
       },
       err => {
         console.log(err);
@@ -86,36 +83,8 @@ export class AssignmentComponent implements OnInit, OnDestroy {
     );
   }
 
-  verifyOwner() {
-    if (this.get_course_b && this.get_profile_b) {
-      if (this.profile.username == this.course.professor.profile.username) {
-        this.is_owner = true;
-      }
-    }
-  }
-
   updateCourse(course) {
     this.course = course;
-  }
-
-  verifyStudent(id) {
-    if (confirm('승인하시겠습니까?')) {
-      this.courseService.updateRepo(id, this.courseid, this.course.repository_set.filter(obj => obj.id == id)[0].url).subscribe(
-        data => {
-          this.courseService.getCourse(this.courseid).subscribe(
-            course => {
-              this.output.emit(this.updateCourse(course));
-            },
-            err => {
-              console.log(err);
-            }
-          );
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    }
   }
 
   onDelete() {
@@ -171,6 +140,42 @@ export class AssignmentComponent implements OnInit, OnDestroy {
 
   downloadAttachment() {
     window.open(this.course.attachments);
+  }
+
+  manualSubmit() {
+    this.courseService.manualSubmit(this.id, this.file).subscribe(
+      (data) => {
+        this.codeUrl = data['code'];
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  uploadListener(event) {
+    if (event.target.files[0]) {
+      this.file = event.target.files[0];
+    } else {
+      this.file = null;
+    }
+  }
+
+  filterAssignment(item) {
+    return this.course.repository_set.filter(data => data.student.profile.id == item.student.profile.id)[0];
+  }
+
+  isPassed(item) {
+    const assignment = this.assignment.submission_set.filter(data => data.student.profile.id == item.student.profile.id)[0];
+
+    if (assignment == null) {
+      return 'Not Submitted';
+    } else if (assignment.is_passed) {
+      return 'Passed';
+    } else {
+      return 'Failed';
+    }
+
   }
 
   ngOnDestroy() {

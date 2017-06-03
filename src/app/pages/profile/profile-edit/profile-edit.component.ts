@@ -47,17 +47,18 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
 
   initForm(profile) {
     this.form = this.fb.group({
-      'is_prof': [profile.is_prof, Validators.compose([Validators.required])],
+      // 'is_prof': [profile.is_prof, Validators.compose([Validators.required])],
       'name': [profile.name, Validators.compose([Validators.required, Validators.minLength(2)])],
       'sid': [profile.sid],
     });
-    this.is_prof = this.form.controls['is_prof'];
+    // this.is_prof = this.form.controls['is_prof'];
     this.name = this.form.controls['name'];
     this.sid = this.form.controls['sid'];
   }
 
   onSubmit(values) {
     values['github_username'] = this.github_username;
+    values['is_prof'] = this.profile.is_prof;
     this.authService.putProfile(values).subscribe(
       (data) => {
         this.router.navigate(['/dashboard']);

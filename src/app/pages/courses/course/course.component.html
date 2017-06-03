@@ -38,12 +38,24 @@
           <td>Attachments</td>
           <td>{{ course?.attachments.split('/').pop() }}</td>
         </tr>
-        <tr *ngFor="let assignment of course?.assignment_set" [routerLink]="['assignments', assignment.id]">
-          <td>Assignment</td>
-          <td>{{ assignment.title }}</td>
-        </tr>
+        <ng-container *ngIf="alreadyRegistered || profile?.username == course?.professor.profile.username">
+          <tr *ngFor="let assignment of course?.assignment_set" [routerLink]="['assignments', assignment.id]">
+            <td>Assignment</td>
+            <td>{{ assignment.title }}</td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="row" *ngIf="profile?.username == course?.professor.profile.username">
+  <div class="container">
+    <div *ngFor="let item of course?.repository_set" class="col-xs-12">
+      <button type="button" class="btn btn-success" *ngIf="!item.is_verified" (click)="verifyStudent(item.id)">
+        {{ item.student.profile.sid }} {{ item.student.profile.name }} 승인하기
+      </button>
+    </div>
   </div>
 </div>
 
@@ -51,7 +63,7 @@
   <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course?.professor.profile.username == profile?.username">강좌 수정하기</button>
   <button class="btn btn-danger" (click)="onDelete()" *ngIf="course?.professor.profile.username == profile?.username">강좌 삭제하기</button>
   <button class="btn btn-secondary" [routerLink]="['assignments', 'add']" *ngIf="course?.professor.profile.username == profile?.username">과제생성</button>
-  <button class="btn btn-secondary" (click)="showRegister()" *ngIf="!alreadyRegistered">신청하기</button>
+  <button class="btn btn-secondary" (click)="showRegister()" *ngIf="!alreadyRegistered && !profile?.is_prof">신청하기</button>
 </div>
 
 <div class="row">
@@ -61,12 +73,13 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="form-group">
-          <label for="url">url</label>
+          <label for="url">github repository</label>
           <input
             type="text"
             id="url"
             formControlName="url"
             class="form-control">
+          <div *ngIf="!url.valid" class="error">Type only name of your repository</div>
         </div>
       </div>
     </div>
@@ -76,7 +89,9 @@
       <div class="col-xs-12">
         <button
           type="submit"
-          class="btn btn-success">Save</button>
+          class="btn btn-success"
+          [disabled]="!registerForm.valid"
+        >Save</button>
         <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
       </div>
     </div>

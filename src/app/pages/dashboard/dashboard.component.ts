@@ -10,9 +10,9 @@ import {Http, Headers} from "@angular/http";
   templateUrl: './dashboard.html'
 })
 export class Dashboard {
-  private form: FormGroup;
-  private file: any;
-  private codeUrl: string = null;
+  public form: FormGroup;
+  public file: any;
+  public codeUrl: string = null;
 
   public fileUploaderOptions:NgUploaderOptions = {
     // url: 'http://website.com/upload'

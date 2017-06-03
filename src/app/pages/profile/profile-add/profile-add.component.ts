@@ -18,7 +18,7 @@ export class ProfileAddComponent implements OnInit, OnDestroy {
   public is_prof: AbstractControl;
   public name: AbstractControl;
   public sid: AbstractControl;
-  private github_username: string = '';
+  github_username: string = '';
   github: Subscription;
 
   constructor(fb: FormBuilder, private router: Router, private authService: AuthService, private http: Http,

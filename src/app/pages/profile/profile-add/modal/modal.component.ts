@@ -11,8 +11,8 @@ import {AuthService} from "../../../../shared/services/auth.service";
 export class ModalComponent implements OnInit {
   modalHeader: string;
   modalContent: string = `register github username`;
-  private github_username: string = "";
-  private errorMessage: string = "";
+  github_username: string = "";
+  errorMessage: string = "";
 
   constructor(private activeModal: NgbActiveModal, private http: Http, private authService: AuthService) {
   }
