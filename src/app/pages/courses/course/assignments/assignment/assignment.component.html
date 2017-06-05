@@ -49,7 +49,7 @@
 
 <div class="row" *ngIf="course?.repository_set">
   <div class="container">
-    <h2>학생들 결과 조회</h2>
+    <h2>Assembly of test results</h2>
     <table class="table table-striped">
       <thead>
         <th>Student</th>
@@ -57,11 +57,13 @@
         <th>Check Detail</th>
       </thead>
       <tbody>
+        <ng-container *ngIf="assignment?.submission_set">
         <tr *ngFor="let item of course?.repository_set">
           <td>{{ item.student.profile.sid }} {{ item.student.profile.name }}</td>
           <td>{{ isPassed(item) }}</td>
           <td><button type="button" class="btn btn-success" (click)="lgModalShow(item.student.profile.id)">확인하기</button></td>
         </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>
@@ -71,20 +73,20 @@
   class="btn btn-info"
   [routerLink]="['edit']"
   *ngIf="profile?.username == course?.professor.profile.username">
-  과제 수정하기
+  Edit Assignment
 </button>
 <button
   class="btn btn-danger"
   (click)="onDelete()"
   *ngIf="profile?.username == course?.professor.profile.username">
-  과제 삭제하기
+  Delete Assignment
 </button>
 <button
   class="btn btn-success"
   (click)="onDownloadCode()"
   *ngIf="profile?.username == course?.professor.profile.username"
   [disabled]="onDownload">
-  학생들 과제 다운받기(압축파일)
+  Download code(zip)
 </button>
 
 <ng-container *ngIf="!profile?.is_prof">
@@ -100,7 +102,7 @@
   (click)="manualGrade()"
   *ngIf="!profile?.is_prof && assignment?.submission_set.length != 0"
   [disabled]="manual">
-  바로 채점하기
+  Test Immediately
 </button>
 
 <router-outlet></router-outlet>

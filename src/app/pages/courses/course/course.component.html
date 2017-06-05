@@ -53,17 +53,17 @@
   <div class="container">
     <div *ngFor="let item of course?.repository_set" class="col-xs-12">
       <button type="button" class="btn btn-success" *ngIf="!item.is_verified" (click)="verifyStudent(item.id)">
-        {{ item.student.profile.sid }} {{ item.student.profile.name }} 승인하기
+        Accept {{ item.student.profile.sid }} {{ item.student.profile.name }}
       </button>
     </div>
   </div>
 </div>
 
 <div class="row">
-  <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course?.professor.profile.username == profile?.username">강좌 수정하기</button>
-  <button class="btn btn-danger" (click)="onDelete()" *ngIf="course?.professor.profile.username == profile?.username">강좌 삭제하기</button>
-  <button class="btn btn-secondary" [routerLink]="['assignments', 'add']" *ngIf="course?.professor.profile.username == profile?.username">과제생성</button>
-  <button class="btn btn-secondary" (click)="showRegister()" *ngIf="!alreadyRegistered && !profile?.is_prof">신청하기</button>
+  <button class="btn btn-info" [routerLink]="['edit']" *ngIf="course?.professor.profile.username == profile?.username">Edit Course</button>
+  <button class="btn btn-danger" (click)="onDelete()" *ngIf="course?.professor.profile.username == profile?.username">Delete Course</button>
+  <button class="btn btn-secondary" [routerLink]="['assignments', 'add']" *ngIf="course?.professor.profile.username == profile?.username">Make Assignment</button>
+  <button class="btn btn-secondary" (click)="showRegister()" *ngIf="!alreadyRegistered && !profile?.is_prof">Register Course</button>
 </div>
 
 <div class="row">
