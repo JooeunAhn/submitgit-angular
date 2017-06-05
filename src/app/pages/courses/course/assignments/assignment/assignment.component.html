@@ -61,7 +61,7 @@
         <tr *ngFor="let item of course?.repository_set">
           <td>{{ item.student.profile.sid }} {{ item.student.profile.name }}</td>
           <td>{{ isPassed(item) }}</td>
-          <td><button type="button" class="btn btn-success" (click)="lgModalShow(item.student.profile.id)">확인하기</button></td>
+          <td><button type="button" class="btn btn-success" (click)="lgModalShow(item.student.profile.id)">Open Modal</button></td>
         </tr>
         </ng-container>
       </tbody>

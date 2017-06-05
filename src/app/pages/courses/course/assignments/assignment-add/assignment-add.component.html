@@ -96,10 +96,8 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <span *ngFor="let control of test_langids.controls;let i=index">
-              <label for="{{ control.name }}">{{ control.name }}</label>
-              <input type="checkbox" id="{{ control.name }}" value="{{ control.value }}" [formControl]="test_langids">
-            </span>
+            <input *ngFor="let control of assignmentForm.controls['test_langids'].controls"
+                   type="checkbox" id="{{ control.name }}" value="{{ control.value }}" [formControl]="control" />
           </div>
         </div>
       </div>
