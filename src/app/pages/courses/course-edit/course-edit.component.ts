@@ -61,6 +61,11 @@ export class CourseEditComponent implements OnInit {
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
+  fileChange(fileInput: any) {
+    this.attachmentsChanged = true;
+    this.course.attachments = fileInput.target.files[0];
+  }
+
   onSubmit() {
     if (
       this.course != null
@@ -74,10 +79,10 @@ export class CourseEditComponent implements OnInit {
       }
       this.courseService.updateCourse(this.id, this.courseForm.value, attachments).subscribe(
         data => {
-          this.courseService.getCourses().subscribe(
+          this.courseService.getCourse(this.id).subscribe(
             courses => {
-              const _courses: Course[] = courses;
-              this.courseService.coursesChanged.emit(_courses);
+              const _course: Course = courses;
+              this.courseService.assignmentsChanged.emit(_course);
             },
             err => {
               console.log(err);
@@ -90,10 +95,5 @@ export class CourseEditComponent implements OnInit {
         }
       );
     }
-  }
-
-  fileChange(fileInput: any) {
-    this.attachmentsChanged = true;
-    this.course.attachments = fileInput.target.files[0];
   }
 }

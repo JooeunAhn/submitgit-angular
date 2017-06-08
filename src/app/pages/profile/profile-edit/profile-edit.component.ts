@@ -30,7 +30,7 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
     this.authService.getProfile().subscribe(
       data => {
         this.profile = data;
-        this.initForm(this.profile);
+        this.initForm(data);
       },
       err => {
         console.log(err);
@@ -47,21 +47,23 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
 
   initForm(profile) {
     this.form = this.fb.group({
-      // 'is_prof': [profile.is_prof, Validators.compose([Validators.required])],
+      'is_prof': [profile.is_prof],
       'name': [profile.name, Validators.compose([Validators.required, Validators.minLength(2)])],
       'sid': [profile.sid],
+      'github_username': [profile.github_username],
     });
-    // this.is_prof = this.form.controls['is_prof'];
+    this.is_prof = this.form.controls['is_prof'];
     this.name = this.form.controls['name'];
     this.sid = this.form.controls['sid'];
+    this.github_username = this.form.controls['github_username'];
   }
 
   onSubmit(values) {
-    values['github_username'] = this.github_username;
+    values['github_username'] = this.profile.github_username;
     values['is_prof'] = this.profile.is_prof;
     this.authService.putProfile(values).subscribe(
       (data) => {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/courses']);
       },
       (err) => {
         console.log(err);

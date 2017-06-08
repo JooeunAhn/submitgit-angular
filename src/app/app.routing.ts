@@ -5,7 +5,7 @@ import {Pages} from "./pages/pages.component";
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'register', redirectTo: "register"},
-  { path: '**', redirectTo: 'pages/dashboard' }
+  { path: '**', redirectTo: 'pages/courses' }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, { useHash: true });

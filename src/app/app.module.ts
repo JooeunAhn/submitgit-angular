@@ -35,7 +35,7 @@ export type StoreType = {
 };
 
 export const APPCONFIG:AppConfig = {
-  BASE_URL: 'http://127.0.0.1:8000/'
+  BASE_URL: 'http://submitgit-stella.ap-northeast-2.elasticbeanstalk.com/'
 };
 
 /**

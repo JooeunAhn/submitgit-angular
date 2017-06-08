@@ -36,7 +36,7 @@
         </tr>
         <tr *ngIf="assignment?.test_file_name && !profile?.is_prof">
           <td>Passed</td>
-          <td>{{ assignment?.is_passed ? 'Passed' : assignment?.is_test ? 'Failed' : 'Not submitted' }}</td>
+          <td>{{ assignment?.submission_set.length == 0 ? 'Not submitted' : assignment?.submission_set[0].is_passed ? 'Passed' : 'Failed' }}</td>
         </tr>
         <tr *ngIf="assignment?.test_file_name">
           <td>Allowed Languages</td>
@@ -100,7 +100,7 @@
 <button
   class="btn btn-warning"
   (click)="manualGrade()"
-  *ngIf="!profile?.is_prof && assignment?.submission_set.length != 0"
+  *ngIf="!profile?.is_prof"
   [disabled]="manual">
   Test Immediately
 </button>

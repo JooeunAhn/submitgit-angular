@@ -26,7 +26,14 @@ export class AssignmentAddComponent implements OnInit {
   course: Course;
   id: string;
 
-  constructor(@Inject('LANG_CHOICES') private LANG_CHOICES, private authService: AuthService, private courseService: CourseService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    @Inject('LANG_CHOICES') private LANG_CHOICES,
+    private authService: AuthService,
+    private courseService: CourseService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) { }
+
 
   ngOnInit() {
     this.route.parent.parent.params.subscribe(

@@ -18,10 +18,16 @@ export class AssignmentEditComponent implements OnInit {
   course: Course;
   assignment;
   assignmentForm: FormGroup;
-  attachmentsChanged: boolean;
+  attachmentsChanged: boolean = false;
   profile;
 
-  constructor(@Inject('LANG_CHOICES') private LANG_CHOICES, private authService: AuthService, private courseService: CourseService, private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    @Inject('LANG_CHOICES') private LANG_CHOICES,
+    private authService: AuthService,
+    private courseService: CourseService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
     this.route.parent.params.subscribe(
@@ -68,7 +74,6 @@ export class AssignmentEditComponent implements OnInit {
 
   initForm() {
     const _splitted = this.assignment.test_langids.split(',');
-    _splitted.pop(); // 마지막에 있는 빈 오브젝트를 지우기 위함
     let formArr = [];
 
     this.LANG_CHOICES.forEach(function (val, idx) {
@@ -78,6 +83,14 @@ export class AssignmentEditComponent implements OnInit {
         formArr.push(new FormControl(false));
       }
     });
+
+    // this.LANG_CHOICES.forEach(function (val, idx) {
+    //   if (_splitted.includes(idx.toString())) {
+    //     val.checked = 'true';
+    //   } else {
+    //     val.checked = 'false';
+    //   }
+    // });
 
     const checkboxArr = new FormArray(formArr);
 
@@ -89,7 +102,7 @@ export class AssignmentEditComponent implements OnInit {
       'deadline': new FormControl(this.assignment.deadline, Validators.required), // 2017-05-19T08:10:09Z
       'test_file_name': new FormControl(this.assignment.test_file_name, Validators.required),
       'test_langids': checkboxArr,
-      'attachments': new FormControl(this.assignment.attachments),
+      'attachments': new FormControl(),
       'test_input': new FormControl(this.assignment.test_input),
       'test_output': new FormControl(this.assignment.test_output),
     });

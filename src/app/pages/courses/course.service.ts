@@ -165,7 +165,7 @@ export class CourseService {
     body.append('deadline', fd.deadline);
     body.append('test_file_name', fd.test_file_name);
 
-    body.append('test_langids', test_langids);
+    body.append('test_langids', test_langids.substr(0, test_langids.length - 1));
     if (attachments != null) {
       body.append('attachments', attachments);
     }
@@ -213,7 +213,7 @@ export class CourseService {
     body.append('deadline', fd.deadline);
     body.append('test_file_name', fd.test_file_name);
 
-    body.append('test_langids', test_langids);
+    body.append('test_langids', test_langids.substr(0, test_langids.length - 1));
     if (attachments != null) {
       body.append('attachments', attachments);
     }
@@ -247,14 +247,13 @@ export class CourseService {
 
   manualGrade(id: string, username: string) {
     return this.http.get(
-      `${this.config.BASE_URL}api/v1/manual/${id}/?username=${username}`,
+      `${this.config.BASE_URL}manual/${id}/?username=${username}`,
       {
         headers: new Headers({
           'Content-Type': 'application/json',
-          'Authorization': `Token ${localStorage.getItem('auth_token')}`
         })
       }
-    ).map((res: Response) => res.json());
+    );
   }
 
   getRepo(id) {

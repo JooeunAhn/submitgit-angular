@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, OnDestroy, OnInit, Output} from '@angular/core';
 import {CourseService} from '../course.service';
 import {ActivatedRoute, ActivatedRouteSnapshot, Params, Router} from '@angular/router';
 import {AuthService} from '../../../shared/services/auth.service';
@@ -17,6 +17,7 @@ export class CourseComponent implements OnInit, OnDestroy {
   repo = null;
   profile;
   id: string;
+  semester: string = 'ㄴㅁㄴㅇㄹ';
   asch: Subscription;
   isRegister: boolean = false;
   registerForm: FormGroup;
@@ -33,6 +34,7 @@ export class CourseComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
+    @Inject('SEMESTER') public SEMESTER,
   ) {
     this.asch = this.courseService.assignmentsChanged.subscribe(data => this.updateCourse(data));
   }
@@ -70,6 +72,11 @@ export class CourseComponent implements OnInit, OnDestroy {
         this.courseService.getCourse(this.id).subscribe(
           (data) => {
             this.course = data;
+            this.SEMESTER.forEach(function (val) {
+              if (data.semester == val.value) {
+                this.semester = val.name;
+              }
+            }, this);
             this.get_course_b = true;
             this.output.emit(this.checkRegister());
           },
@@ -126,6 +133,7 @@ export class CourseComponent implements OnInit, OnDestroy {
       data => {
         this.is_verified = false;
         this.alreadyRegistered = true;
+        this.isRegister = false;
       },
       err => {
         console.log(err);
