@@ -93,17 +93,6 @@
         </div>
       </div>
 
-      <!--test_langids-->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label >test_langids</label>
-            <input *ngFor="let control of assignmentForm.controls['test_langids'].controls"
-                   type="checkbox" id="{{ control.name }}" value="{{ control.value }}" [formControl]="control" />
-          </div>
-        </div>
-      </div>
-
       <!-- attachments -->
       <div class="row" *ngIf="assignment.attachments">
         <div class="col-xs-12">
@@ -126,6 +115,40 @@
         </div>
       </div>
 
+      <!--test_file_name-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="test_time">test time</label>
+            <input
+              type="text"
+              id="test_time"
+              formControlName="test_time"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <!--test_langids-->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label>test_langids</label>
+            <input *ngFor="let control of assignmentForm.controls['test_langids'].controls"
+                   type="checkbox" id="{{ control.name }}" value="{{ control.value }}" [formControl]="control" />
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-xs-12">
+          <label for="is_test">test needed</label>
+          <input formControlName="is_test" type="checkbox" class="form-control" id="is_test">
+        </div>
+      </div>
+
+      <ng-container *ngIf="assignmentForm.value.is_test">
       <!--test_input-->
       <div class="row">
         <div class="col-xs-12">
@@ -155,6 +178,7 @@
           </div>
         </div>
       </div>
+      </ng-container>
 
       <!--is_test-->
       <!--<div class="row">-->

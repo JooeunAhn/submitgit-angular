@@ -90,6 +90,7 @@ export class AssignmentAddComponent implements OnInit {
       'title': new FormControl('', Validators.required),
       'content': new FormControl('', Validators.required),
       'is_test': new FormControl(false),
+      'test_time': new FormControl(),
       'deadline': new FormControl('', Validators.required), // 2017-05-19T08:10:09Z
       'test_file_name': new FormControl('', Validators.required),
       'test_langids': checkboxArr,
@@ -103,6 +104,8 @@ export class AssignmentAddComponent implements OnInit {
     if (this.profile.is_prof) {
       this.courseService.addAssignment(this.assignmentForm.value, this.attachments, this.id).subscribe(
         data => {
+          console.log('add compleleted');
+          console.log(data);
           this.courseService.getCourse(this.id).subscribe(
             course => {
               const _course: Course = course;

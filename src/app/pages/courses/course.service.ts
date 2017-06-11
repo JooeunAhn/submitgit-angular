@@ -161,17 +161,20 @@ export class CourseService {
     body.append('title', fd.title);
     body.append('course', courseid);
     body.append('content', fd.content);
-    body.append('is_test', 'false');
-    body.append('deadline', fd.deadline);
     body.append('test_file_name', fd.test_file_name);
-
-    body.append('test_langids', test_langids.substr(0, test_langids.length - 1));
+    body.append('deadline', fd.deadline);
     if (attachments != null) {
       body.append('attachments', attachments);
     }
-    if (fd.test_input != null && fd.test_output != null) {
+    body.append('test_langids', test_langids.substr(0, test_langids.length - 1));
+    body.append('test_time', fd.test_time);
+    body.append('is_test', fd.is_test);
+    if (fd.is_test) {
       body.append('test_input', fd.test_input);
       body.append('test_output', fd.test_output);
+    } else {
+      body.append('test_input', '');
+      body.append('test_output', '');
     }
 
     return this.http.post(
@@ -209,17 +212,19 @@ export class CourseService {
     body.append('title', fd.title);
     body.append('course', courseid);
     body.append('content', fd.content);
-    body.append('is_test', fd.is_test);
     body.append('deadline', fd.deadline);
     body.append('test_file_name', fd.test_file_name);
-
-    body.append('test_langids', test_langids.substr(0, test_langids.length - 1));
     if (attachments != null) {
       body.append('attachments', attachments);
     }
-    if (fd.test_input != null && fd.test_output != null) {
+    body.append('test_langids', test_langids.substr(0, test_langids.length - 1));
+    body.append('is_test', fd.is_test);
+    if (fd.is_test) {
       body.append('test_input', fd.test_input);
       body.append('test_output', fd.test_output);
+    } else {
+      body.append('test_input', '');
+      body.append('test_output', '');
     }
 
     return this.http.put(

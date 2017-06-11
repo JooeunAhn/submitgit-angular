@@ -99,6 +99,7 @@ export class AssignmentEditComponent implements OnInit {
       'title': new FormControl(this.assignment.title, Validators.required),
       'content': new FormControl(this.assignment.content, Validators.required),
       'is_test': new FormControl(this.assignment.is_test),
+      'test_time': new FormControl(this.assignment.test_time),
       'deadline': new FormControl(this.assignment.deadline, Validators.required), // 2017-05-19T08:10:09Z
       'test_file_name': new FormControl(this.assignment.test_file_name, Validators.required),
       'test_langids': checkboxArr,
@@ -126,6 +127,8 @@ export class AssignmentEditComponent implements OnInit {
       }
       this.courseService.updateAssignment(this.id, this.assignmentForm.value, attachments, this.courseid).subscribe(
         data => {
+          console.log('update completed');
+          console.log(data);
           this.courseService.getCourse(this.courseid).subscribe(
             course => {
               const _course: Course = course;
